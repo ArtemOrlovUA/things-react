@@ -4,7 +4,7 @@
 
 @layer components {
   .input {
-    @apply mt-1 w-52 rounded-full border p-2 transition-all focus:w-60 focus:outline-none focus:ring focus:ring-yellow-400;
+    @apply sm:focus:w-72 w-56 rounded-full border border-stone-300 bg-stone-100 p-2 text-sm transition-all placeholder:text-stone-700 focus:outline-none focus:ring focus:ring-blue-400;
   }
 
   .loader {
