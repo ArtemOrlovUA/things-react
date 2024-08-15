@@ -4,7 +4,7 @@ import NotesList from './NotesList';
 function NotesPage() {
   return (
     <div className="">
-      <div className="bg-blue-200 py-2 sm:grid sm:grid-cols-[1fr_3fr] h-full">
+      <div className="bg-blue-200 py-2 sm:grid sm:grid-cols-[1fr_3fr] h-screen sm:h-full">
         <CreateNote />
         <NotesList />
       </div>
