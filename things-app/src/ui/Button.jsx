@@ -7,8 +7,6 @@ function Button({ children, state, to, type = 'primary', onClick }) {
   const styles = {
     primary: base + ` p-4 `,
     small: base + ` p-2 `,
-    secondary:
-      'rounded-full text-lg border-2 border-stone-400 font-semibold uppercase tracking-wide transition-colors hover:bg-blue-400 hover:text-stone-100 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-offset-2 disabled:cursor-not-allowed p-1.5',
     close: base + ` p-2 flex items-center justify-center`,
     edit: base + ` p-2 flex items-center justify-center`,
   };

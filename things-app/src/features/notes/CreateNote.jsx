@@ -8,7 +8,7 @@ function formatDate(date) {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const day = pad(date.getDate());
-  const month = pad(date.getMonth() + 1); // getMonth() returns 0-11
+  const month = pad(date.getMonth() + 1);
   const year = date.getFullYear();
 
   return `${hours}:${minutes}, ${day}.${month}.${year}`;
@@ -25,8 +25,8 @@ function CreateNote() {
 
     const newNote = {
       id: Date.now(),
-      title,
-      text: note,
+      title: title.trim(),
+      text: note.trim(),
       date: formatDate(new Date()),
     };
 
@@ -35,7 +35,7 @@ function CreateNote() {
   };
 
   return (
-    <div className="bg-blue-300 m-6 rounded-lg flex flex-col items-center md:min-w-[328px] lg:max-h-[544px] transition-all duration-300 ease-in-out">
+    <div className="bg-blue-300 m-6 rounded-lg flex flex-col items-center sm:min-w-[20rem] max-h-[36rem] transition-all duration-300 ease-in-out">
       <div className="sm:hidden w-[90%] flex float-right my-4">
         <Button onClick={() => setIsHidden(!isHidden)} type="small">
           {isHidden ? 'Open' : 'Hide'}
@@ -43,12 +43,14 @@ function CreateNote() {
       </div>
       <form
         className={`w-[90%] h-full flex flex-col justify-between transition-all duration-300 ease-in-out
-          ${isHidden ? 'max-h-0 opacity-0 overflow-hidden' : 'max-h-[1000px] opacity-100'}`}
+          ${
+            isHidden ? 'max-h-0 opacity-0 overflow-hidden' : 'max-h-[1000px] opacity-100'
+          } sm:max-h-[1000px] opacity-100`}
         onSubmit={handleSubmit}>
         <div
           className={`transition-all duration-300 ease-in-out ${
             isHidden ? 'scale-y-0' : 'scale-y-100'
-          }`}>
+          } sm:scale-y-100`}>
           <textarea
             value={title}
             maxLength={45}
@@ -65,8 +67,8 @@ function CreateNote() {
             required></textarea>
         </div>
         <div
-          className={`w-full mb-4 mt-2 flex justify-center transition-all duration-300 ease-in-out 
-          ${isHidden ? 'scale-y-0' : 'scale-y-100'}`}>
+          className={`w-full pb-4 mb-6 mt-3 sm:mt-0 flex justify-center items-center transition-all duration-300 ease-in-out 
+          ${isHidden ? 'scale-y-0' : 'scale-y-100'} sm:scale-y-100`}>
           <Button>Add note</Button>
         </div>
       </form>

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
 
 const NotesContext = createContext();
 
@@ -9,29 +9,48 @@ function NotesProvider({ children }) {
     return savedNotes ? JSON.parse(savedNotes) : [];
   });
 
-  useEffect(
-    function () {
-      localStorage.setItem('notes', JSON.stringify(notes));
-    },
-    [notes],
-  );
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredNotes = useMemo(() => {
+    const lowercasedQuery = searchQuery.toLowerCase().trim();
+    return notes.filter((note) => note.title.toLowerCase().includes(lowercasedQuery));
+  }, [notes, searchQuery]);
+
+  function handleSearchInput(e) {
+    setSearchQuery(e.target.value);
+  }
+
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes));
+  }, [notes]);
 
   function addNote(newNote) {
     setNotes((prevNotes) => [...prevNotes, newNote]);
+  }
 
-    const notesLocal = localStorage?.getItem('notes');
-    console.log(notesLocal);
+  function editNote(updatedNote) {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note)),
+    );
   }
 
   function deleteNote(id) {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
   }
 
-  return (
-    <NotesContext.Provider value={{ notes, setNotes, addNote, deleteNote }}>
-      {children}
-    </NotesContext.Provider>
-  );
+  const value = {
+    notes,
+    filteredNotes,
+    searchQuery,
+    setNotes,
+    addNote,
+    editNote,
+    deleteNote,
+    handleSearchInput,
+    setSearchQuery,
+  };
+
+  return <NotesContext.Provider value={value}>{children}</NotesContext.Provider>;
 }
 
 function useNotes() {

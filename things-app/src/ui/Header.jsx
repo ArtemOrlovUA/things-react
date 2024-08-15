@@ -4,7 +4,7 @@ import SearchNote from '../features/notes/SearchNote';
 
 function Header() {
   return (
-    <header className="bg-blue-200 md:flex md:items-center md:justify-between p-2">
+    <header className="bg-blue-300 md:flex md:items-center md:justify-between p-2">
       <Link to={'/'} className="text-xl">
         <div className="text-2xl ml-2">
           <span className="font-semibold">Things</span>: Your notes
