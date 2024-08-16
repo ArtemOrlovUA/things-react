@@ -55,6 +55,7 @@ function Button({ children, state, to, type = 'primary', onClick }) {
 
   return (
     <button
+      type="button"
       onClick={onClick}
       disabled={state === 'loading' || state === 'submitting'}
       className={styles[type]}>

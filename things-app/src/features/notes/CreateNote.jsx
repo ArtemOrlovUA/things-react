@@ -17,8 +17,19 @@ function formatDate(date) {
 function CreateNote() {
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
+  const [CategoryInput, setCategoryInput] = useState([]);
+  const [categories, setCategories] = useState(['Car', 'Work', 'Home', 'Personal', 'Other']);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const { addNote } = useNotes();
   const [isHidden, setIsHidden] = useState(false);
+
+  const handleAddCategory = (category) => {
+    setCategories((prev) => [...prev, category]);
+  };
+
+  const handleSelectCategory = (category) => {
+    setSelectedCategories((prev) => [...prev, category]);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,6 +38,7 @@ function CreateNote() {
       id: Date.now(),
       title: title.trim(),
       text: note.trim(),
+      categories: [],
       date: formatDate(new Date()),
     };
 
@@ -62,16 +74,40 @@ function CreateNote() {
             required></textarea>
           <textarea
             value={note}
-            onChange={(e) => setNote(e.target.value)}
-            className="w-full p-2 bg-blue-100 rounded-lg mt-4 input h-72 text-lg resize-none"
-            placeholder="Take a note..."
             maxLength={210}
+            onChange={(e) => setNote(e.target.value)}
+            className="w-full p-2 bg-blue-100 rounded-lg mt-4 input h-44 text-lg resize-none"
+            placeholder="Take a note..."
             required></textarea>
+          <div className="grid grid-cols-[3fr_1fr] p-2 gap-x-2">
+            <input
+              className="w-52 rounded-full border border-stone-300 bg-stone-100 p-2 text-sm transition-all placeholder:text-stone-700 focus:outline-none focus:ring focus:ring-blue-400"
+              placeholder="Add categories..."
+              value={CategoryInput}
+              onChange={(e) => setCategoryInput(e.target.value)}
+            />
+            <Button type="small" onClick={() => handleAddCategory(CategoryInput)}>
+              Add
+            </Button>
+          </div>
+          <div className="w-full bg-slate-50 rounded-lg mt-2">
+            <div className="flex overflow-x-auto">
+              {categories.map((category) => (
+                // eslint-disable-next-line react/jsx-key
+                <div
+                  className="flex items-center justify-center gap-x-2 bg-blue-200 rounded-full px-3 py-1 m-2"
+                  onClick={() => handleSelectCategory(category)}>
+                  {category}
+                  <Button type="close"></Button>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         <div
           className={`w-full pb-4 mb-6 mt-3 sm:mt-6 flex justify-center items-center transition-all duration-300 ease-in-out 
-          ${isHidden ? 'scale-y-0' : 'scale-y-100'} sm:scale-y-100`}>
-          <Button>Add note</Button>
+            ${isHidden ? 'scale-y-0' : 'scale-y-100'} sm:scale-y-100`}>
+          <Button onClick={handleSubmit}>Add note</Button>
         </div>
       </form>
     </div>
