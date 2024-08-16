@@ -95,12 +95,12 @@ function NoteItem({ note }) {
             value={editTitle}
             maxLength={45}
             onChange={(e) => setEditTitle(e.target.value)}
-            className="font-bold mb-2 p-2 break-words bg-slate-200 rounded-lg"></textarea>
+            className="font-bold mb-2 p-2 break-words bg-slate-200 rounded-lg resize-none"></textarea>
           <textarea
             value={editText}
             maxLength={210}
             onChange={(e) => setEditText(e.target.value)}
-            className="whitespace-normal break-words p-2 bg-slate-200 rounded-lg"></textarea>
+            className="whitespace-normal break-words p-2 bg-slate-200 rounded-lg resize-none"></textarea>
           <div className="w-full flex items-center justify-center">
             <Button
               onClick={() => {
