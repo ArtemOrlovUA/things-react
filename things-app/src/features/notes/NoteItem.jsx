@@ -209,6 +209,7 @@ function NoteItem({ note }) {
                   title: editTitle,
                   text: editText,
                   date: note.date,
+                  selectedCategories: note.selectedCategories,
                 };
                 editNote(editedNote);
                 toggleEditing();
