@@ -102,9 +102,14 @@ function NoteItem({ note }) {
                   </div>
                 </React.Fragment>
               ))}
-              <div className="flex items-center gap-x-2">
-                <Button onClick={(e) => toggleCategoriesExpand(e)} type="plus" />
-                {isCategoriesExpanded && (
+              <div className="flex items-center gap-x-2 ">
+                <div className="flex items-center mx-2">
+                  <Button onClick={(e) => toggleCategoriesExpand(e)} type="plus" />
+                </div>
+                <div
+                  className={`transition-all duration-300 overflow-hidden ${
+                    isCategoriesExpanded ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                  }`}>
                   <div className="bg-slate-50 rounded-lg flex items-center gap-x-2">
                     {categories.map((category) =>
                       Array.isArray(note.selectedCategories) &&
@@ -125,7 +130,7 @@ function NoteItem({ note }) {
                       ) : null,
                     )}
                   </div>
-                )}
+                </div>
               </div>
             </div>
           ) : (
