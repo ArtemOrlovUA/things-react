@@ -4,9 +4,31 @@ import React, { createContext, useContext, useEffect, useState, useMemo } from '
 const NotesContext = createContext();
 
 function NotesProvider({ children }) {
+  const validateNote = (note) => {
+    // Validate that the note has the required properties
+    return (
+      note &&
+      typeof note.id === 'number' &&
+      typeof note.title === 'string' &&
+      typeof note.text === 'string' &&
+      Array.isArray(note.selectedCategories) &&
+      typeof note.date === 'string'
+    );
+  };
+
   const [notes, setNotes] = useState(() => {
     const savedNotes = localStorage.getItem('notes');
-    return savedNotes ? JSON.parse(savedNotes) : [];
+    if (savedNotes) {
+      const parsedNotes = JSON.parse(savedNotes);
+      // Filter out any notes that don't match the required format
+      const validNotes = parsedNotes.filter(validateNote);
+      if (validNotes.length !== parsedNotes.length) {
+        // If there are invalid notes, clear the invalid ones from localStorage
+        localStorage.setItem('notes', JSON.stringify(validNotes));
+      }
+      return validNotes;
+    }
+    return [];
   });
 
   const [categories, setCategories] = useState(() => {

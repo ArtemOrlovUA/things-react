@@ -101,7 +101,7 @@ function CreateNote() {
             <Button
               type="small"
               onClick={() => {
-                if (CategoryInput === '') return;
+                if (CategoryInput.trim() === '') return;
                 addCategory(CategoryInput);
                 setCategoryInput('');
               }}>
