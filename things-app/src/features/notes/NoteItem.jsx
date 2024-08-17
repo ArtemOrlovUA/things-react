@@ -6,16 +6,36 @@ import { useNotes } from './notesContext';
 function NoteItem({ note }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isEditing, setisEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState(note.title);
-  const [editText, setEditText] = useState(note.text);
+  const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(false);
+  const [editTitle, setEditTitle] = useState(note?.title || '');
+  const [editText, setEditText] = useState(note?.text || '');
   const [width, setWidth] = useState(window.innerWidth);
-  const { deleteNote, editNote } = useNotes();
+  const { notes, categories, deleteNote, editNote, deleteSelectedCategories, addSelectedCategory } =
+    useNotes();
 
   const MAX_LENGHT_BEFORE_CUT_TITLE = 15;
   const MAX_LENGHT_BEFORE_CUT_TEXT = 50;
 
+  useEffect(() => {
+    const noteToUpdate = notes.find((n) => n.id === note.id);
+    if (noteToUpdate) {
+      const updatedSelectedCategories = noteToUpdate.selectedCategories.filter((category) =>
+        categories.includes(category),
+      );
+      if (updatedSelectedCategories.length !== noteToUpdate.selectedCategories.length) {
+        const updatedNote = { ...noteToUpdate, selectedCategories: updatedSelectedCategories };
+        editNote(updatedNote);
+      }
+    }
+  }, [categories, notes, note.id, editNote]);
+
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const toggleCategoriesExpand = (e) => {
+    e.stopPropagation();
+    setIsCategoriesExpanded(!isCategoriesExpanded);
   };
 
   const toggleEditing = () => {
@@ -25,6 +45,10 @@ function NoteItem({ note }) {
   window.addEventListener('resize', () => {
     setWidth(window.innerWidth);
   });
+
+  if (!note) {
+    return null;
+  }
 
   return (
     <li className="bg-blue-100 p-2 m-2 rounded-lg cursor-pointer overflow-hidden transition-all duration-300 ease-in-out overflow-x-visible">
@@ -44,32 +68,106 @@ function NoteItem({ note }) {
             : note.text.slice(0, MAX_LENGHT_BEFORE_CUT_TEXT - 30) + '...'}
         </span>
         <span className="bg-stone-50 p-2 mx-1 rounded-lg">{note.date}</span>
+
         <span className="ml-1 flex gap-2">
           <Button
             onClick={(e) => {
               e.stopPropagation();
               toggleEditing();
             }}
-            type="edit">
-            Delete
-          </Button>
+            type="edit"
+          />
           <Button
             onClick={(e) => {
               e.stopPropagation();
               deleteNote(note.id);
             }}
-            type="close">
-            Delete
-          </Button>
+            type="close"
+          />
         </span>
+        <div className="bg-slate-50 rounded-lg mx-1 overflow-x-auto flex min-h-16">
+          {Array.isArray(note.selectedCategories) && note.selectedCategories.length > 0 ? (
+            <div className="flex">
+              {note.selectedCategories.map((category) => (
+                <React.Fragment key={category}>
+                  <div className="flex items-center gap-x-2 bg-blue-300 rounded-full px-2 py-1 m-2 w-fit">
+                    <span>{category}</span>
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteSelectedCategories(note.id, category);
+                      }}
+                      type="close"
+                    />
+                  </div>
+                </React.Fragment>
+              ))}
+              <div className="flex items-center gap-x-2">
+                <Button onClick={(e) => toggleCategoriesExpand(e)} type="plus" />
+                {isCategoriesExpanded && (
+                  <div className="bg-slate-50 rounded-lg flex items-center gap-x-2">
+                    {categories.map((category) =>
+                      Array.isArray(note.selectedCategories) &&
+                      !note.selectedCategories.includes(category) ? (
+                        <div
+                          key={category}
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex gap-x-2 bg-blue-200 rounded-full px-3 py-1 w-fit cursor-pointer">
+                          <span className="py-2">{category}</span>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addSelectedCategory(note.id, category);
+                            }}
+                            type="plus"
+                          />
+                        </div>
+                      ) : null,
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="p-2 text-gray-500 flex items-center gap-x-2">
+              <span className="min-w-fit mr-2">No categories selected</span>
+              <div className="flex items-center mr-2">
+                <Button onClick={(e) => toggleCategoriesExpand(e)} type="plus" />
+              </div>
+              <div
+                className={`transition-all duration-300 overflow-hidden ${
+                  isCategoriesExpanded ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                }`}>
+                <div className="bg-slate-50 rounded-lg flex items-center gap-x-2">
+                  {categories.map((category) =>
+                    Array.isArray(note.selectedCategories) &&
+                    !note.selectedCategories.includes(category) ? (
+                      <div
+                        key={category}
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex gap-x-2 bg-blue-200 rounded-full px-3 py-1 w-fit cursor-pointer">
+                        <span className="py-2">{category}</span>
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            addSelectedCategory(note.id, category);
+                          }}
+                          type="plus"
+                        />
+                      </div>
+                    ) : null,
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+      {/* Expandable content */}
       <div
-        className={`mt-2 bg-stone-50 rounded-lg transition-all duration-300 ease-in-out
-                    ${
-                      isExpanded
-                        ? 'max-h-[1000px] opacity-100 p-2'
-                        : 'max-h-0 opacity-0 p-0 overflow-hidden'
-                    }`}>
+        className={`mt-2 bg-stone-50 rounded-lg transition-all duration-300 ease-in-out ${
+          isExpanded ? 'max-h-[1000px] opacity-100 p-2' : 'max-h-0 opacity-0 p-0 overflow-hidden'
+        }`}>
         <div
           className={`transition-all duration-300 ease-in-out ${
             isExpanded ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
@@ -81,12 +179,9 @@ function NoteItem({ note }) {
 
       {/* EDIT NOTE PART */}
       <div
-        className={`mt-2 bg-stone-50 rounded-lg transition-all duration-300 ease-in-out
-                    ${
-                      isEditing
-                        ? 'max-h-[1000px] opacity-100 p-2'
-                        : 'max-h-0 opacity-0 p-0 overflow-hidden'
-                    }`}>
+        className={`mt-2 bg-stone-50 rounded-lg transition-all duration-300 ease-in-out ${
+          isEditing ? 'max-h-[1000px] opacity-100 p-2' : 'max-h-0 opacity-0 p-0 overflow-hidden'
+        }`}>
         <div
           className={`transition-all flex flex-col gap-2 duration-300 ease-in-out ${
             isEditing ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'

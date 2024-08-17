@@ -9,6 +9,11 @@ function NotesProvider({ children }) {
     return savedNotes ? JSON.parse(savedNotes) : [];
   });
 
+  const [categories, setCategories] = useState(() => {
+    const savedCategories = localStorage.getItem('categories');
+    return savedCategories ? JSON.parse(savedCategories) : [];
+  });
+
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredNotes = useMemo(() => {
@@ -18,6 +23,45 @@ function NotesProvider({ children }) {
 
   function handleSearchInput(e) {
     setSearchQuery(e.target.value);
+  }
+
+  useEffect(() => {
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }, [categories]);
+
+  function addCategory(newCategory) {
+    if (categories.includes(newCategory)) {
+      alert('Category already added');
+      return;
+    }
+    setCategories((prevCategories) => [...prevCategories, newCategory]);
+  }
+
+  function addSelectedCategory(noteId, category) {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === noteId
+          ? { ...note, selectedCategories: [...note.selectedCategories, category] }
+          : note,
+      ),
+    );
+  }
+
+  function deleteCategory(category) {
+    setCategories((prevCategories) => prevCategories.filter((cat) => cat !== category));
+  }
+
+  function deleteSelectedCategories(noteId, category) {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === noteId
+          ? {
+              ...note,
+              selectedCategories: note.selectedCategories.filter((cat) => cat !== category),
+            }
+          : note,
+      ),
+    );
   }
 
   useEffect(() => {
@@ -48,6 +92,11 @@ function NotesProvider({ children }) {
     deleteNote,
     handleSearchInput,
     setSearchQuery,
+    addCategory,
+    addSelectedCategory,
+    deleteCategory,
+    deleteSelectedCategories,
+    categories,
   };
 
   return <NotesContext.Provider value={value}>{children}</NotesContext.Provider>;
