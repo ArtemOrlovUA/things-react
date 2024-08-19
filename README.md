@@ -1,3 +1,5 @@
 The Things App
 
-Small local app to save your notes.
+App to save your notes locally.
+
+Demo: https://things-application.netlify.app/
