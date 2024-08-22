@@ -114,6 +114,7 @@ function CreateNote() {
                 // eslint-disable-next-line react/jsx-key
                 <div
                   className="flex items-center justify-center gap-x-2 bg-blue-400 rounded-full px-3 py-1 m-2 w-fit"
+                  key={category}
                   onClick={() => handleSelectCategory(category)}>
                   {category}
                   <Button
@@ -130,6 +131,7 @@ function CreateNote() {
                   // eslint-disable-next-line react/jsx-key
                   <div
                     className="flex items-center justify-center gap-x-2 bg-blue-200 rounded-full px-3 py-1 m-2 w-fit cursor-pointer"
+                    key={category}
                     onClick={() => handleSelectCategory(category)}>
                     <div className="py-2">{category}</div>
                     <Button

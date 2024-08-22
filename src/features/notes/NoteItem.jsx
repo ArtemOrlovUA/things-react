@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import Button from '../../ui/Button';
 import { useNotes } from './notesContext';
+import EditNote from './EditNote';
+import Categories from './Categories';
 
 function NoteItem({ note }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -85,92 +87,14 @@ function NoteItem({ note }) {
             type="close"
           />
         </span>
-        <div className="bg-slate-50 rounded-lg overflow-x-auto mx-1 flex min-h-16 overflow-y-hidden">
-          {Array.isArray(note.selectedCategories) && note.selectedCategories.length > 0 ? (
-            <div className="flex">
-              {note.selectedCategories.map((category) => (
-                <React.Fragment key={category}>
-                  <div className="flex items-center gap-x-2 bg-blue-300 rounded-full px-2 py-1 m-2">
-                    <span>{category}</span>
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteSelectedCategories(note.id, category);
-                      }}
-                      type="close"
-                    />
-                  </div>
-                </React.Fragment>
-              ))}
-              <div className="flex items-center gap-x-2">
-                <div className="flex items-center mx-2">
-                  <Button onClick={(e) => toggleCategoriesExpand(e)} type="plus" />
-                </div>
-                <div
-                  className={`transition-all duration-300 ${
-                    isCategoriesExpanded ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                  }`}>
-                  <div className="w-fit bg-slate-50 rounded-lg flex overflow-y-hidden items-center gap-x-2 pr-2">
-                    {' '}
-                    {/* Added padding-right */}
-                    {categories.map((category) =>
-                      Array.isArray(note.selectedCategories) &&
-                      !note.selectedCategories.includes(category) ? (
-                        <div
-                          key={category}
-                          onClick={(e) => e.stopPropagation()}
-                          className="flex gap-x-2 bg-blue-200 rounded-full px-3 py-1 w-fit cursor-pointer">
-                          <span className="py-2">{category}</span>
-                          <Button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              addSelectedCategory(note.id, category);
-                            }}
-                            type="plus"
-                          />
-                        </div>
-                      ) : null,
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="p-2 text-gray-500 flex items-center gap-x-2 w-fit">
-              <span className="min-w-fit mr-2">No categories selected</span>
-              <div className="flex items-center mr-2">
-                <Button onClick={(e) => toggleCategoriesExpand(e)} type="plus" />
-              </div>
-              <div
-                className={`transition-all duration-300 overflow-hidden ${
-                  isCategoriesExpanded ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                }`}>
-                <div className="bg-slate-50 rounded-lg flex items-center overflow-y-hidden gap-x-2 w-fit pr-[6.2rem]">
-                  {' '}
-                  {/* Added padding-right */}
-                  {categories.map((category) =>
-                    Array.isArray(note.selectedCategories) &&
-                    !note.selectedCategories.includes(category) ? (
-                      <div
-                        key={category}
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex gap-x-2 bg-blue-200 rounded-full px-3 py-1 w-fit cursor-pointer">
-                        <span className="py-2">{category}</span>
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            addSelectedCategory(note.id, category);
-                          }}
-                          type="plus"
-                        />
-                      </div>
-                    ) : null,
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        <Categories
+          note={note}
+          categories={categories}
+          addSelectedCategory={addSelectedCategory}
+          deleteSelectedCategories={deleteSelectedCategories}
+          toggleCategoriesExpand={toggleCategoriesExpand}
+          isCategoriesExpanded={isCategoriesExpanded}
+        />
       </div>
       {/* Expandable content */}
       <div
@@ -187,43 +111,16 @@ function NoteItem({ note }) {
       </div>
 
       {/* EDIT NOTE PART */}
-      <div
-        className={`mt-2 bg-stone-50 rounded-lg transition-all duration-300 ease-in-out ${
-          isEditing ? 'max-h-[1000px] opacity-100 p-2' : 'max-h-0 opacity-0 p-0 overflow-hidden'
-        }`}>
-        <div
-          className={`transition-all flex flex-col gap-2 duration-300 ease-in-out ${
-            isEditing ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
-          }`}>
-          <textarea
-            value={editTitle}
-            maxLength={45}
-            onChange={(e) => setEditTitle(e.target.value)}
-            className="font-bold mb-2 p-2 break-words bg-slate-200 rounded-lg resize-none"></textarea>
-          <textarea
-            value={editText}
-            maxLength={210}
-            onChange={(e) => setEditText(e.target.value)}
-            className="whitespace-normal break-words p-2 bg-slate-200 rounded-lg resize-none"></textarea>
-          <div className="w-full flex items-center justify-center">
-            <Button
-              onClick={() => {
-                const editedNote = {
-                  id: note.id,
-                  title: editTitle,
-                  text: editText,
-                  date: note.date,
-                  selectedCategories: note.selectedCategories,
-                };
-                editNote(editedNote);
-                toggleEditing();
-              }}
-              type="primary">
-              Save
-            </Button>
-          </div>
-        </div>
-      </div>
+      <EditNote
+        note={note}
+        isEditing={isEditing}
+        editTitle={editTitle}
+        setEditTitle={setEditTitle}
+        editText={editText}
+        setEditText={setEditText}
+        editNote={editNote}
+        toggleEditing={toggleEditing}
+      />
     </li>
   );
 }

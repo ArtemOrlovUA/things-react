@@ -1,12 +1,21 @@
 import { Link } from 'react-router-dom';
 
 /* eslint-disable react/prop-types */
-function Button({ children, state, to, type = 'primary', onClick, usageAs = 'button' }) {
+function Button({
+  children,
+  state,
+  to,
+  type = 'primary',
+  popovertarget,
+  onClick,
+  usageAs = 'button',
+}) {
   const base = `rounded-full text-lg text-stone-800 bg-blue-400 font-semibold uppercase tracking-wide transition-colors hover:bg-blue-600 hover:text-stone-100 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-offset-2 disabled:cursor-not-allowed`;
 
   const styles = {
     primary: base + ` p-4 `,
     small: base + ` p-2 `,
+    small_selected: base + ` p-2 bg-blue-500`,
     close: base + ` p-2 flex items-center justify-center`,
     close_selected: base + ` p-2 flex items-center justify-center bg-blue-600`,
     edit: base + ` p-2 flex items-center justify-center`,
@@ -84,6 +93,7 @@ function Button({ children, state, to, type = 'primary', onClick, usageAs = 'but
     <button
       type={usageAs}
       onClick={onClick}
+      popovertarget={popovertarget}
       disabled={state === 'loading' || state === 'submitting'}
       className={styles[type]}>
       {content}

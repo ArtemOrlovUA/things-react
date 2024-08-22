@@ -15,9 +15,13 @@ function UsernameProvider({ children }) {
     localStorage.setItem('username', username);
   }, [username]);
 
+  function updateName(newName) {
+    setUsername(newName);
+  }
+
   const contextValue = {
     username,
-    setUsername,
+    updateName,
     clearUsername: () => {
       setUsername('');
       localStorage.removeItem('username');
