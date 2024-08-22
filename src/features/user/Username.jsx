@@ -44,7 +44,7 @@ function Username() {
   return (
     <>
       <div className="flex space-x-2">
-        <span className="flex items-center">{username}</span>
+        <span className="flex items-center ml-2 sm:ml-0">{username}</span>
 
         {username && (
           <Button
