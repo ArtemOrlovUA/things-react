@@ -7,6 +7,7 @@ function Username() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [newUsername, setNewUsername] = useState('');
   const popoverRef = useRef(null);
+  const changeButtonRef = useRef(null);
 
   function toggleExpand() {
     setIsExpanded((prev) => !prev);
@@ -23,24 +24,6 @@ function Username() {
     toggleExpand();
   }
 
-  function handleClickOutside(event) {
-    if (popoverRef.current && !popoverRef.current.contains(event.target)) {
-      setIsExpanded(false);
-    }
-  }
-
-  useEffect(() => {
-    if (isExpanded) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isExpanded]);
-
   return (
     <>
       <div className="flex space-x-2">
@@ -48,10 +31,11 @@ function Username() {
 
         {username && (
           <Button
+            ref={changeButtonRef}
             type="small"
             onClick={(e) => {
               e.stopPropagation();
-              toggleExpand(); // Add a slight delay to avoid conflict with handleClickOutside
+              toggleExpand();
             }}
             popovertarget={'my-popover'}>
             Change
