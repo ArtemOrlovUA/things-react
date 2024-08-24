@@ -56,7 +56,7 @@ function CreateNote() {
   };
 
   return (
-    <div className="bg-blue-300 m-6 rounded-lg flex flex-col items-center sm:min-w-[15rem] max-h-[37rem] transition-all duration-300 ease-in-out">
+    <div className="bg-blue-300 mx-6 mt-4 rounded-lg flex flex-col items-center sm:min-w-[15rem] max-h-[37rem] transition-all duration-300 ease-in-out">
       <div className="sm:hidden w-[90%] flex float-right my-4">
         <Button onClick={() => setIsHidden(!isHidden)} type="small">
           {isHidden ? 'Open' : 'Hide'}
@@ -148,7 +148,7 @@ function CreateNote() {
           </div>
         </div>
         <div
-          className={`w-full pb-4 mb-6 mt-3 sm:mt-6 flex justify-center items-center transition-all duration-300 ease-in-out 
+          className={`w-full pb-4 mt-3 sm:mt-6 flex justify-center items-center transition-all duration-300 ease-in-out 
             ${isHidden ? 'scale-y-0' : 'scale-y-100'} sm:scale-y-100`}>
           <Button usageAs="submit">Add note</Button>
         </div>
