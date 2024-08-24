@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Button from '../../ui/Button';
 import { useUsername } from './usernameContext';
 
@@ -6,8 +6,6 @@ function Username() {
   const { username, updateName } = useUsername();
   const [isExpanded, setIsExpanded] = useState(false);
   const [newUsername, setNewUsername] = useState('');
-  const popoverRef = useRef(null);
-  const changeButtonRef = useRef(null);
 
   function toggleExpand() {
     setIsExpanded((prev) => !prev);
@@ -26,12 +24,11 @@ function Username() {
 
   return (
     <>
-      <div className="flex space-x-2">
-        <span className="flex items-center ml-2 sm:ml-0">{username}</span>
+      <div className="flex space-x-2 mt-2 md:mt-0">
+        <span className="flex items-center ml-2 md:ml-0">{username}</span>
 
         {username && (
           <Button
-            ref={changeButtonRef}
             type="small"
             onClick={(e) => {
               e.stopPropagation();
@@ -43,7 +40,7 @@ function Username() {
         )}
 
         {isExpanded && (
-          <div ref={popoverRef} className="popover">
+          <div>
             <input
               type="text"
               value={newUsername}

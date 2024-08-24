@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Username from '../features/user/Username';
-import SearchNote from '../features/notes/SearchNote';
+import SearchNote from '../features/search/SearchNote';
 import { useNotes } from '../features/notes/notesContext';
 
 function Header() {

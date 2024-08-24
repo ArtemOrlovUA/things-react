@@ -5,13 +5,19 @@ import Home from './ui/Home';
 import NotesPage from './features/notes/NotesPage';
 import { UsernameProvider } from './features/user/usernameContext';
 import { NotesProvider } from './features/notes/notesContext';
+import { FiltersProvider } from './features/filters/filtersContext';
+import { SearchProvider } from './features/search/searchContext';
 
 const router = createBrowserRouter([
   {
     element: (
       <UsernameProvider>
         <NotesProvider>
-          <AppLayout />
+          <FiltersProvider>
+            <SearchProvider>
+              <AppLayout />
+            </SearchProvider>
+          </FiltersProvider>
         </NotesProvider>
       </UsernameProvider>
     ),

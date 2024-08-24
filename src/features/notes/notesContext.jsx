@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const NotesContext = createContext();
 
@@ -20,10 +20,9 @@ function NotesProvider({ children }) {
     const savedNotes = localStorage.getItem('notes');
     if (savedNotes) {
       const parsedNotes = JSON.parse(savedNotes);
-      // Filter out any notes that don't match the required format
+
       const validNotes = parsedNotes.filter(validateNote);
       if (validNotes.length !== parsedNotes.length) {
-        // If there are invalid notes, clear the invalid ones from localStorage
         localStorage.setItem('notes', JSON.stringify(validNotes));
       }
       return validNotes;
@@ -35,17 +34,6 @@ function NotesProvider({ children }) {
     const savedCategories = localStorage.getItem('categories');
     return savedCategories ? JSON.parse(savedCategories) : [];
   });
-
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredNotes = useMemo(() => {
-    const lowercasedQuery = searchQuery.toLowerCase().trim();
-    return notes.filter((note) => note.title.toLowerCase().includes(lowercasedQuery));
-  }, [notes, searchQuery]);
-
-  function handleSearchInput(e) {
-    setSearchQuery(e.target.value);
-  }
 
   useEffect(() => {
     localStorage.setItem('categories', JSON.stringify(categories));
@@ -106,14 +94,10 @@ function NotesProvider({ children }) {
 
   const value = {
     notes,
-    filteredNotes,
-    searchQuery,
     setNotes,
     addNote,
     editNote,
     deleteNote,
-    handleSearchInput,
-    setSearchQuery,
     addCategory,
     addSelectedCategory,
     deleteCategory,
