@@ -6,7 +6,7 @@ const filtersContext = createContext();
 
 function FiltersProvider({ children }) {
   const { notes } = useNotes();
-  const [filters, setFilters] = useState(['Alphabet']);
+  const [filters, setFilters] = useState(['Alphabet', 'Date']);
   const [selectedFilter, setSelectedFilter] = useState('');
   const [filteredNotes, setFilteredNotes] = useState([]);
 
@@ -21,6 +21,9 @@ function FiltersProvider({ children }) {
   useEffect(() => {
     if (selectedFilter === 'Alphabet') {
       setFilteredNotes(() => [...notes].sort((a, b) => a.title.localeCompare(b.title)));
+    }
+    if (selectedFilter === 'Date') {
+      setFilteredNotes(() => [...notes].sort((a, b) => b.date.localeCompare(a.date)));
     }
   }, [selectedFilter, notes]);
 

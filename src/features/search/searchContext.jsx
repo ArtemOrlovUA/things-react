@@ -14,10 +14,20 @@ const SearchProvider = ({ children }) => {
     const lowercasedQuery = searchQuery.toLowerCase().trim();
 
     if (selectedFilter !== '') {
-      return filteredNotes.filter((note) => note.title.toLowerCase().includes(lowercasedQuery));
+      const uniqueNotes = new Set([
+        ...filteredNotes.filter((note) => note.title.toLowerCase().includes(lowercasedQuery)),
+        ...filteredNotes.filter((note) => note.text.toLowerCase().includes(lowercasedQuery)),
+      ]);
+
+      return Array.from(uniqueNotes);
     }
 
-    return notes.filter((note) => note.title.toLowerCase().includes(lowercasedQuery));
+    const uniqueNotes = new Set([
+      ...notes.filter((note) => note.title.toLowerCase().includes(lowercasedQuery)),
+      ...notes.filter((note) => note.text.toLowerCase().includes(lowercasedQuery)),
+    ]);
+
+    return Array.from(uniqueNotes);
   }, [notes, searchQuery, selectedFilter, filteredNotes]);
 
   function handleSearchInput(e) {

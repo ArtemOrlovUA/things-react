@@ -76,14 +76,14 @@ function CreateNote() {
             value={title}
             maxLength={45}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 bg-blue-100 rounded-lg input h-24 text-lg sm:mt-4 resize-none"
+            className="w-full p-2 bg-blue-100 rounded-lg input_create h-24 text-lg sm:mt-4 resize-none"
             placeholder="Enter a header..."
             required></textarea>
           <textarea
             value={note}
             maxLength={210}
             onChange={(e) => setNote(e.target.value)}
-            className="w-full p-2 bg-blue-100 rounded-lg mt-4 input h-44 text-lg resize-none"
+            className="w-full p-2 bg-blue-100 rounded-lg mt-4 input_create h-44 text-lg resize-none"
             placeholder="Take a note..."
             required></textarea>
           <div className="grid grid-cols-[3fr_1fr] p-2 gap-x-2">
@@ -148,7 +148,7 @@ function CreateNote() {
           </div>
         </div>
         <div
-          className={`w-full pb-4 mt-3 sm:mt-6 flex justify-center items-center transition-all duration-300 ease-in-out 
+          className={`w-full my-3 flex justify-center items-center transition-all duration-300 ease-in-out 
             ${isHidden ? 'scale-y-0' : 'scale-y-100'} sm:scale-y-100`}>
           <Button usageAs="submit">Add note</Button>
         </div>
