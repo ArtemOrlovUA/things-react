@@ -27,7 +27,7 @@ function Username() {
       <div className="flex space-x-2 mt-2 md:mt-0">
         <span className="flex items-center ml-2 md:ml-0">{username}</span>
 
-        {username && (
+        {username && !isExpanded && (
           <Button
             type="small"
             onClick={(e) => {

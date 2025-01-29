@@ -4,10 +4,11 @@ import { useUsername } from '../features/user/usernameContext';
 
 function Home() {
   const [usernameLocal, setUsernameLocal] = useState('');
-  const { username, setUsername } = useUsername();
+  const { username, updateName } = useUsername();
 
   const handleSubmit = () => {
-    setUsername(usernameLocal);
+    console.log(usernameLocal);
+    updateName(usernameLocal);
   };
 
   return (
@@ -25,7 +26,10 @@ function Home() {
             type="text"
             placeholder="Your name"
             value={usernameLocal}
-            onChange={(e) => setUsernameLocal(e.target.value)}
+            onChange={(e) => {
+              setUsernameLocal(e.target.value);
+              console.log(usernameLocal);
+            }}
             className="input mt-4"
           />
 
