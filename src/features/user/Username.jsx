@@ -43,6 +43,7 @@ function Username() {
           <div>
             <input
               type="text"
+              defaultValue={username}
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
               placeholder="Enter your username"
