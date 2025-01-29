@@ -23,7 +23,15 @@ function FiltersProvider({ children }) {
       setFilteredNotes(() => [...notes].sort((a, b) => a.title.localeCompare(b.title)));
     }
     if (selectedFilter === 'Date') {
-      setFilteredNotes(() => [...notes].sort((a, b) => b.date.localeCompare(a.date)));
+      setFilteredNotes(() => {
+        const parseDate = (dateString) => {
+          const [timePart, datePart] = dateString.split(', ');
+          const [hours, minutes] = timePart.split(':');
+          const [day, month, year] = datePart.split('.');
+          return new Date(year, month - 1, day, hours, minutes);
+        };
+        return [...notes].sort((a, b) => parseDate(b.date) - parseDate(a.date));
+      });
     }
   }, [selectedFilter, notes]);
 
