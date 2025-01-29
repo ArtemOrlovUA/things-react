@@ -84,8 +84,7 @@ function CreateNote() {
             maxLength={210}
             onChange={(e) => setNote(e.target.value)}
             className="w-full p-2 bg-blue-100 rounded-lg mt-4 input_create h-44 text-lg resize-none"
-            placeholder="Take a note..."
-            required></textarea>
+            placeholder="Take a note..."></textarea>
           <div className="grid grid-cols-[3fr_1fr] p-2 gap-x-2">
             <input
               className="rounded-full border min-w-4 border-stone-300 bg-stone-100 p-2 text-sm transition-all placeholder:text-stone-700 focus:outline-none focus:ring focus:ring-blue-400"

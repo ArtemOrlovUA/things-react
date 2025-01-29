@@ -48,6 +48,12 @@ function NoteItem({ note }) {
     setWidth(window.innerWidth);
   });
 
+  function handleDeleteNote() {
+    if (window.confirm('Are you sure you want to delete this note?')) {
+      deleteNote(note.id);
+    }
+  }
+
   if (!note) {
     return null;
   }
@@ -62,7 +68,7 @@ function NoteItem({ note }) {
             ? note.title.slice(0, MAX_LENGHT_BEFORE_CUT_TITLE) + '...'
             : note.title.slice(0, MAX_LENGHT_BEFORE_CUT_TITLE - 0) + '...'}
         </span>
-        <span className="bg-stone-50 p-2 mx-1 rounded-lg">
+        <span className="bg-stone-50 p-2 mx-1 mt-1 rounded-lg min-h-[2.4rem]">
           {note.text.length < 35
             ? note.text
             : width > 640
@@ -82,7 +88,7 @@ function NoteItem({ note }) {
           <Button
             onClick={(e) => {
               e.stopPropagation();
-              deleteNote(note.id);
+              handleDeleteNote();
             }}
             type="close"
           />
