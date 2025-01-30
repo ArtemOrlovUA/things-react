@@ -32,14 +32,16 @@ function Username() {
   return (
     <>
       <div className="flex space-x-2 mt-2 md:mt-0">
-        <span className="flex items-center ml-2 md:ml-0">
-          <img
-            src={currentUser?.picture}
-            alt="User avatar"
-            className="w-10 h-10 mr-2 rounded-full"
-          />
-          {username !== 'Guest' ? username : ''}
-        </span>
+        {username !== 'Guest' && (
+          <span className="flex items-center ml-2 md:ml-0">
+            <img
+              src={currentUser?.picture}
+              alt="User avatar"
+              className="w-10 h-10 mr-2 rounded-full"
+            />
+            {username !== 'Guest' ? username : ''}
+          </span>
+        )}
 
         {/* {username !== 'Guest' && !isExpanded && (
           <Button
