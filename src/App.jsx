@@ -7,6 +7,7 @@ import { UsernameProvider } from './features/user/usernameContext';
 import { NotesProvider } from './features/notes/notesContext';
 import { FiltersProvider } from './features/filters/filtersContext';
 import { SearchProvider } from './features/search/searchContext';
+import LoginButton from './ui/LoginButton';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: '/notes',
         element: <NotesPage />,
+      },
+      {
+        path: '/login',
+        element: <LoginButton />,
       },
     ],
   },
