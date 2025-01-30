@@ -1,43 +1,33 @@
 import { useState } from 'react';
 import Button from './Button';
-import { useUsername } from '../features/user/usernameContext';
+import { useUser } from '../context/UserContext';
+import LoginButton from './LoginButton';
 
 function Home() {
-  const [usernameLocal, setUsernameLocal] = useState('');
-  const { username, updateName } = useUsername();
+  const { currentUser } = useUser();
 
-  const handleSubmit = () => {
-    console.log(usernameLocal);
-    updateName(usernameLocal);
-  };
+  const username = currentUser?.name || 'Guest';
+  // const { username, updateName } = useUsername();
+
+  // const handleSubmit = () => {
+  //   console.log(usernameLocal);
+  //   updateName(usernameLocal);
+  // };
 
   return (
     <div className="flex flex-col items-center text-2xl p-6">
-      {!username ? (
+      {username === 'Guest' ? (
         <p className="sm:mt-8">Hello and welcome to Things!</p>
       ) : (
         <p className="sm:mt-8 text-3xl">Welcome back, {username}!</p>
       )}
-      {!username ? (
+      {username === 'Guest' ? (
         <>
-          <p className="mt-4">To start, enter your name in field below</p>
+          <p className="mt-4">To start, log in to your account with Google</p>
 
-          <input
-            type="text"
-            placeholder="Your name"
-            value={usernameLocal}
-            onChange={(e) => {
-              setUsernameLocal(e.target.value);
-              console.log(usernameLocal);
-            }}
-            className="input mt-4"
-          />
-
-          {usernameLocal && (
-            <Button onClick={handleSubmit} to="/notes">
-              Continue
-            </Button>
-          )}
+          <div className="mt-4">
+            <LoginButton />
+          </div>
         </>
       ) : (
         <Button to="/notes">To notes</Button>

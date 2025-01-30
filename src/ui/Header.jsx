@@ -2,9 +2,13 @@ import { Link } from 'react-router-dom';
 import Username from '../features/user/Username';
 import SearchNote from '../features/search/SearchNote';
 import { useNotes } from '../features/notes/notesContext';
+import { useUser } from '../context/UserContext';
 
 function Header() {
   const { notes } = useNotes();
+  const { currentUser } = useUser();
+
+  const username = currentUser?.name || 'Guest';
 
   const isNotes = notes.length > 0;
 
@@ -16,7 +20,7 @@ function Header() {
         </div>
       </Link>
 
-      {isNotes && <SearchNote />}
+      {username !== 'Guest' && isNotes && <SearchNote />}
 
       <Username />
     </header>

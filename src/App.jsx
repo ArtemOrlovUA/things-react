@@ -8,19 +8,25 @@ import { NotesProvider } from './features/notes/notesContext';
 import { FiltersProvider } from './features/filters/filtersContext';
 import { SearchProvider } from './features/search/searchContext';
 import LoginButton from './ui/LoginButton';
+import { UserProvider } from './context/UserContext';
+import ProtectedRoute from './ui/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
     element: (
-      <UsernameProvider>
-        <NotesProvider>
-          <FiltersProvider>
-            <SearchProvider>
-              <AppLayout />
-            </SearchProvider>
-          </FiltersProvider>
-        </NotesProvider>
-      </UsernameProvider>
+      <UserProvider>
+        <UsernameProvider>
+          <NotesProvider>
+            <FiltersProvider>
+              <SearchProvider>
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              </SearchProvider>
+            </FiltersProvider>
+          </NotesProvider>
+        </UsernameProvider>
+      </UserProvider>
     ),
     errorElement: <Error />,
     children: [
