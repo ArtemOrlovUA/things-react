@@ -40,9 +40,9 @@ function Username() {
 
   return (
     <>
-      <div className="flex space-x-2 mt-2 md:mt-0">
+      <div className="flex space-x-2 mt-2 mr-2 md:mt-0">
         {username !== 'Guest' && (
-          <span className="flex items-center ml-2 md:ml-0">
+          <span className="flex items-center ml-2  md:ml-0">
             <img
               src={userPicture || '/default-avatar.png'}
               alt="User avatar"

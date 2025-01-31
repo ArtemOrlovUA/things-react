@@ -13,9 +13,9 @@ function Header() {
   const isNotes = notes.length > 0;
 
   return (
-    <header className="bg-blue-300 md:flex md:items-center md:justify-between p-2  sm:min-h-[70px]">
+    <header className="bg-blue-300 md:flex md:items-center md:justify-between py-2 sm:p=2 sm:min-h-[70px] justify-center">
       <Link to={'/'} className="text-xl">
-        <div className="text-2xl ml-2">
+        <div className="sm:text-2xl text-3xl ml-2">
           <span className="font-semibold">Things</span>: Your notes
         </div>
       </Link>

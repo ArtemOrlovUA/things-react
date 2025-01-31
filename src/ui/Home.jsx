@@ -14,7 +14,7 @@ function Home() {
   // };
 
   return (
-    <div className="flex flex-col items-center text-2xl p-6 sm: mt-12">
+    <div className="flex flex-col items-center text-2xl p-6 mt-2 sm:mt-12">
       {username === 'Guest' ? (
         <p className="sm:mt-8">Hello and welcome to Things!</p>
       ) : (
