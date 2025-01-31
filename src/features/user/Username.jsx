@@ -1,18 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../../ui/Button';
 import { useUsername } from './usernameContext';
 import { useUser } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
-import { googleLogout } from '@react-oauth/google';
 
 function Username() {
   const { updateName } = useUsername();
+  const [userPicture, setUserPicture] = useState('');
   const { currentUser, handleLogout } = useUser();
   const [isExpanded, setIsExpanded] = useState(false);
   const [newUsername, setNewUsername] = useState('');
   const navigate = useNavigate();
 
   const username = currentUser?.name || 'Guest';
+
+  console.log(currentUser?.picture);
 
   function toggleExpand() {
     setIsExpanded((prev) => !prev);
@@ -29,16 +31,25 @@ function Username() {
     toggleExpand();
   }
 
+  useEffect(() => {
+    console.log('User picture updated:', currentUser?.picture);
+    if (currentUser?.picture) {
+      setUserPicture(() => currentUser.picture);
+    }
+  }, [currentUser?.picture]);
+
   return (
     <>
       <div className="flex space-x-2 mt-2 md:mt-0">
         {username !== 'Guest' && (
           <span className="flex items-center ml-2 md:ml-0">
             <img
-              src={currentUser?.picture}
+              src={userPicture || '/default-avatar.png'}
               alt="User avatar"
               className="w-10 h-10 mr-2 rounded-full"
+              onError={(e) => (e.target.src = '/default-avatar.png')}
             />
+
             {username !== 'Guest' ? username : ''}
           </span>
         )}
@@ -58,8 +69,9 @@ function Username() {
           <Button
             type="small"
             onClick={() => {
-              googleLogout();
-              handleLogout();
+              fetch('/.netlify/functions/logout', { credentials: 'include' }).then(() =>
+                handleLogout(),
+              );
               navigate('/');
             }}>
             Log out

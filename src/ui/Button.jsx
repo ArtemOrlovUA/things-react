@@ -84,7 +84,7 @@ function Button({
 
   if (to)
     return (
-      <Link onClick={onClick} className={`${styles[type]} mt-10`} to={to}>
+      <Link onClick={onClick} className={`${styles[type]} sm:mt-10 mt-6`} to={to}>
         {content}
       </Link>
     );

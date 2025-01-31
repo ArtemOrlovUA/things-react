@@ -13,7 +13,7 @@ function Header() {
   const isNotes = notes.length > 0;
 
   return (
-    <header className="bg-blue-300 md:flex md:items-center md:justify-between p-2 min-h-[153px] sm:min-h-[70px]">
+    <header className="bg-blue-300 md:flex md:items-center md:justify-between p-2  sm:min-h-[70px]">
       <Link to={'/'} className="text-xl">
         <div className="text-2xl ml-2">
           <span className="font-semibold">Things</span>: Your notes
