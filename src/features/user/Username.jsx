@@ -56,32 +56,38 @@ function Username() {
   };
 
   return (
-    <div className="relative group" ref={menuRef}>
-      <button onClick={toggleExpand} className="flex items-center space-x-2 focus:outline-none">
+    <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <img
           src={userPicture || '/default-avatar.png'}
           alt="User avatar"
-          className="w-9 h-9 rounded-full border-2 border-white/30 hover:border-purple-300 transition-all duration-200 shadow-sm hover:shadow-md"
+          className="w-9 h-9 rounded-full border-2 border-white/30 shadow-sm"
           onError={(e) => {
             e.target.src = '/default-avatar.png';
-            setUserPicture('/default-avatar.png'); // Додано примусове оновлення
+            setUserPicture('/default-avatar.png');
           }}
         />
         <span className="text-gray-700 font-medium hidden md:inline-block">{username}</span>
-      </button>
-
-      <div
-        className={`absolute right-0 mt-2 w-48 rounded-xl bg-white/80 backdrop-blur-lg border border-white/20 shadow-xl ${
-          isExpanded ? 'block' : 'hidden'
-        }`}>
-        <div className="p-4 space-y-3">
-          <button
-            onClick={handleLogoutClick}
-            className="w-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100/50 rounded-lg transition-all duration-200">
-            Log Out
-          </button>
-        </div>
       </div>
+
+      {username !== 'Guest' && (
+        <button
+          onClick={handleLogoutClick}
+          className="p-2 rounded-full bg-gradient-to-r from-purple-600/20 to-pink-600/20 hover:from-purple-600/30 hover:to-pink-600/30 transition-all duration-200">
+          <svg
+            className="w-5 h-5 text-gray-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }

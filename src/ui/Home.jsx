@@ -32,7 +32,7 @@ function Home() {
           )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 mt-8 sm:mt-12">
+        <div className="grid md:grid-cols-2 max-w-4xl mx-auto gap-8 mt-8 sm:mt-12">
           <div className="feature-card p-8 rounded-3xl bg-white/80 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
             <div className="flex flex-col items-center text-center">
               <div className="mb-6 w-16 h-16 rounded-2xl bg-purple-100 flex items-center justify-center">

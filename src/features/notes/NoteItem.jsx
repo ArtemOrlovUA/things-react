@@ -59,25 +59,21 @@ function NoteItem({ note }) {
   }
 
   return (
-    <li className="bg-blue-100 p-2 m-2 rounded-lg cursor-pointer overflow-hidden transition-all duration-300 ease-in-out overflow-x-visible">
-      <div className="grid sm:grid-cols-[1fr_3fr_1fr] gap-y-2 items-center" onClick={toggleExpand}>
-        <span className="bg-stone-50 p-2 mx-1 mt-1 rounded-lg font-bold">
-          {note.title.length < MAX_LENGHT_BEFORE_CUT_TITLE
-            ? note.title
-            : width > 640
-            ? note.title.slice(0, MAX_LENGHT_BEFORE_CUT_TITLE) + '...'
-            : note.title.slice(0, MAX_LENGHT_BEFORE_CUT_TITLE - 0) + '...'}
-        </span>
-        <span className="bg-stone-50 p-2 mx-1 mt-1 rounded-lg min-h-[2.4rem]">
-          {note.text.length < 35
-            ? note.text
-            : width > 640
-            ? note.text.slice(0, MAX_LENGHT_BEFORE_CUT_TEXT) + '...'
-            : note.text.slice(0, MAX_LENGHT_BEFORE_CUT_TEXT - 30) + '...'}
-        </span>
-        <span className="bg-stone-50 p-2 mx-1 rounded-lg">{note.date}</span>
+    <li className="bg-white/20 backdrop-blur-sm p-4 rounded-xl border border-white/30 shadow-sm hover:shadow-md transition-all duration-200">
+      <div className="grid sm:grid-cols-[1fr_3fr_1fr] gap-3 items-center" onClick={toggleExpand}>
+        <div className="bg-white/50 p-3 rounded-lg font-bold border border-white/30">
+          {note.title.slice(0, MAX_LENGHT_BEFORE_CUT_TITLE) +
+            (note.title.length > MAX_LENGHT_BEFORE_CUT_TITLE ? '...' : '')}
+        </div>
 
-        <span className="ml-1 flex gap-2">
+        <div className="bg-white/50 p-3 rounded-lg border border-white/30">
+          {note.text.slice(0, MAX_LENGHT_BEFORE_CUT_TEXT) +
+            (note.text.length > MAX_LENGHT_BEFORE_CUT_TEXT ? '...' : '')}
+        </div>
+
+        <div className="bg-white/50 p-3 rounded-lg border border-white/30 text-sm">{note.date}</div>
+
+        <div className="flex gap-2 col-span-full sm:col-span-1">
           <Button
             onClick={(e) => {
               e.stopPropagation();
@@ -92,7 +88,7 @@ function NoteItem({ note }) {
             }}
             type="close"
           />
-        </span>
+        </div>
         <Categories
           note={note}
           categories={categories}
@@ -102,18 +98,13 @@ function NoteItem({ note }) {
           isCategoriesExpanded={isCategoriesExpanded}
         />
       </div>
-      {/* Expandable content */}
+
       <div
-        className={`mt-2 bg-stone-50 rounded-lg transition-all duration-300 ease-in-out ${
-          isExpanded ? 'max-h-[1000px] opacity-100 p-2' : 'max-h-0 opacity-0 p-0 overflow-hidden'
+        className={`mt-3 bg-white/30 rounded-lg transition-all duration-300 ${
+          isExpanded ? 'max-h-[1000px] opacity-100 p-4' : 'max-h-0 opacity-0'
         }`}>
-        <div
-          className={`transition-all duration-300 ease-in-out ${
-            isExpanded ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
-          }`}>
-          <h3 className="font-bold mb-2 break-words">{note.title}</h3>
-          <p className="whitespace-normal break-words">{note.text}</p>
-        </div>
+        <h3 className="text-lg font-semibold mb-2">{note.title}</h3>
+        <p className="whitespace-pre-wrap">{note.text}</p>
       </div>
 
       {/* EDIT NOTE PART */}

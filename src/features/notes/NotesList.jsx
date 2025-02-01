@@ -9,21 +9,21 @@ function NotesList() {
   const { filteredNotes, selectedFilter } = useFilters();
 
   const isFIlterSelected = selectedFilter !== '';
-
   const notesToDisplay =
     searchQuery?.length > 0 ? searchedNotes : isFIlterSelected ? filteredNotes : notes;
-  // const notesToDisplay = searchQuery?.length > 0 ? searchedNotes : notes;
 
   return (
-    <div className="bg-blue-300 m-6 rounded-lg flex flex-col min-w-[10rem] overflow-y-auto">
+    <div className="bg-white/30 backdrop-blur-lg rounded-xl mx-6 my-4 p-4 border border-white/20 shadow-sm hover:shadow-md transition-shadow duration-200">
       {notesToDisplay.length > 0 ? (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-3">
           {notesToDisplay.map((note) => (
             <NoteItem key={note.id} note={note} />
           ))}
         </ul>
       ) : (
-        <p className="flex justify-center m-6 text-3xl">Sorry, no notes to show there.</p>
+        <p className="text-center p-6 text-xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          No notes found
+        </p>
       )}
     </div>
   );

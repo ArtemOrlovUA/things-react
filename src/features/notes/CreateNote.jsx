@@ -48,7 +48,6 @@ function CreateNote() {
 
     console.log(newNote);
 
-    // Очищення полів
     setTitle('');
     setNote('');
     setSelectedCategories([]);
