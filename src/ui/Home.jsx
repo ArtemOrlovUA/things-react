@@ -9,9 +9,9 @@ function Home() {
 
   return (
     <div className="bg-gradient-to-br from-purple-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-10xl mx-auto">
+      <div className="max-w-8xl mx-auto">
         <div className="text-center space-y-6 md:space-y-2">
-          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">
+          <h1 className="text-3xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">
             {username === 'Guest' ? (
               <span className="whitespace-nowrap">Welcome to Things!</span>
             ) : (
