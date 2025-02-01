@@ -27,7 +27,7 @@ function EditNote({
           onChange={(e) => setEditTitle(e.target.value)}
           className="font-bold mb-2 p-2 break-words bg-slate-200 rounded-lg resize-none"></textarea>
         <textarea
-          value={editText}
+          value={editText !== 'No text' ? editText : ''}
           maxLength={210}
           required
           onChange={(e) => setEditText(e.target.value)}
