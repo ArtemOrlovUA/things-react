@@ -6,7 +6,7 @@ import Filters from '../filters/Filters';
 function NotesPage() {
   return (
     <div className="h-screen flex flex-col">
-      <div className="bg-blue-100 py-2 flex-grow flex flex-col sm:grid sm:grid-cols-[1fr_1.5fr] xl:grid-cols-[1fr_3fr]">
+      <div className="bg-gradient-to-br from-purple-200 to-blue-200 py-2 flex-grow flex flex-col sm:grid sm:grid-cols-[1fr_1.5fr] xl:grid-cols-[1fr_3fr]">
         <div className="sm:overflow-auto">
           <CreateNote />
         </div>
