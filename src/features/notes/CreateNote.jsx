@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Button from '../../ui/Button';
 import { useNotes } from './notesContext';
+import HideAndOpenButton from '../../ui/HideAndOpenButton';
 
 function formatDate(date) {
   const pad = (num) => num.toString().padStart(2, '0');
@@ -57,14 +58,7 @@ function CreateNote() {
 
   return (
     <div className="mx-6 mt-4 rounded-3xl bg-gradient-to-br from-purple-50 to-blue-50 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out hover:-translate-y-2">
-      <div className="sm:hidden w-[90%] flex float-right my-4">
-        <Button
-          onClick={() => setIsHidden(!isHidden)}
-          type="small"
-          className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-pink-600 hover:to-purple-600">
-          {isHidden ? 'Open' : 'Hide'}
-        </Button>
-      </div>
+      <HideAndOpenButton isHidden={isHidden} setIsHidden={setIsHidden} />
       <form
         className={`w-[90%] h-full flex ml-4 flex-col justify-between transition-all duration-300 ease-in-out
           ${
