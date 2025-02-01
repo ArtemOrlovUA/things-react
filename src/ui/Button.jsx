@@ -10,84 +10,110 @@ function Button({
   onClick,
   usageAs = 'button',
 }) {
-  const base = `rounded-full text-lg text-stone-800 bg-blue-400 font-semibold uppercase tracking-wide transition-colors hover:bg-blue-600 hover:text-stone-100 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-offset-2 disabled:cursor-not-allowed`;
+  const base = `font-semibold uppercase tracking-wide transition-all duration-200 ease-out 
+    focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-70 
+    flex items-center justify-center gap-2`;
 
   const styles = {
-    primary: base + ` p-4 `,
-    small: base + ` p-2 `,
-    small_selected: base + ` p-2 bg-blue-500`,
-    close: base + ` p-2 flex items-center justify-center`,
-    close_selected: base + ` p-2 flex items-center justify-center bg-blue-600`,
-    edit: base + ` p-2 flex items-center justify-center`,
-    plus: base + ` p-2 flex items-center justify-center`,
+    primary:
+      base +
+      ` px-8 py-4 rounded-full text-white bg-gradient-to-r from-purple-600 to-pink-600 
+      hover:from-purple-700 hover:to-pink-700 hover:shadow-lg hover:scale-[1.02] 
+      focus:ring-purple-200 focus:ring-offset-2`,
+
+    small:
+      base +
+      ` px-6 py-2.5 rounded-full text-sm bg-white/30 backdrop-blur-sm border border-white/30 
+      text-gray-700 hover:border-purple-300 hover:bg-white/50 hover:shadow-md 
+      focus:ring-purple-200 focus:ring-offset-1`,
+
+    small_selected:
+      base +
+      ` px-6 py-2.5 rounded-full text-sm bg-gradient-to-r from-purple-600/20 to-pink-600/20 
+      border border-purple-200 text-purple-700 hover:shadow-md 
+      focus:ring-purple-200 focus:ring-offset-1`,
+
+    close:
+      base +
+      ` p-2 rounded-full bg-white/30 backdrop-blur-sm border border-white/30 
+      text-gray-500 hover:text-purple-600 hover:border-purple-300 hover:bg-white/50 
+      hover:shadow-md focus:ring-purple-200`,
+
+    close_selected:
+      base +
+      ` p-2 rounded-full bg-gradient-to-r from-purple-600/20 to-pink-600/20 
+      border border-purple-200 text-purple-600 hover:shadow-md 
+      focus:ring-purple-200`,
+
+    edit:
+      base +
+      ` p-2 rounded-full bg-white/30 backdrop-blur-sm border border-white/30 
+      text-gray-500 hover:text-purple-600 hover:border-purple-300 hover:bg-white/50 
+      hover:shadow-md focus:ring-purple-200`,
+
+    plus:
+      base +
+      ` p-2 rounded-full bg-white/30 backdrop-blur-sm border border-white/30 
+      text-gray-500 hover:text-purple-600 hover:border-purple-300 hover:bg-white/50 
+      hover:shadow-md focus:ring-purple-200`,
   };
 
   const icons = {
     close: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
+        className="h-5 w-5"
         fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M6 18L18 6M6 6l12 12"
-        />
+        stroke="currentColor"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
     ),
     close_selected: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
+        className="h-5 w-5"
         fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M6 18L18 6M6 6l12 12"
-        />
+        stroke="currentColor"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
     ),
     edit: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
+        className="h-5 w-5"
         fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
+        stroke="currentColor"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth={2}
-          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+          d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.656 2.655L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
         />
       </svg>
     ),
     plus: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
+        className="h-5 w-5"
         fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        stroke="currentColor"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
       </svg>
     ),
   };
 
   const content = icons[type] || children;
 
-  if (to)
+  if (to) {
     return (
-      <Link onClick={onClick} className={`${styles[type]} sm:mt-10 mt-6`} to={to}>
+      <Link onClick={onClick} className={`${styles[type]}`} to={to}>
         {content}
       </Link>
     );
+  }
 
   return (
     <button

@@ -1,53 +1,82 @@
+/* eslint-disable react/no-unescaped-entities */
 import Button from './Button';
 import { useUser } from '../context/UserContext';
 import LoginButton from './LoginButton';
 
 function Home() {
   const { currentUser } = useUser();
-
   const username = currentUser?.name || 'Guest';
-  // const { username, updateName } = useUsername();
-
-  // const handleSubmit = () => {
-  //   console.log(usernameLocal);
-  //   updateName(usernameLocal);
-  // };
 
   return (
-    <div className="flex flex-col items-center text-2xl p-6 mt-2 sm:mt-12">
-      {username === 'Guest' ? (
-        <p className="sm:mt-8">Hello and welcome to Things!</p>
-      ) : (
-        <p className="sm:mt-8 text-3xl text-center">Welcome back, {username}!</p>
-      )}
-      {username === 'Guest' ? (
-        <>
-          <p className="mt-4 text-center">To start, log in to your account with Google</p>
-
-          <div className="mt-4">
-            <LoginButton />
-          </div>
-        </>
-      ) : (
-        <Button to="/notes">To notes</Button>
-      )}
-      <div className="mt-8">
-        <div className="w-full flex justify-center">
-          <p className="text-xl">Here is our features:</p>
+    <div className="bg-gradient-to-br from-purple-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-10xl mx-auto">
+        <div className="text-center space-y-6 md:space-y-2">
+          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">
+            {username === 'Guest' ? (
+              <span className="whitespace-nowrap">Welcome to Things!</span>
+            ) : (
+              `Welcome back, ${username}!`
+            )}
+          </h1>
+          {username === 'Guest' && (
+            <p className="text-xl text-gray-600">Your thoughts, organized beautifully</p>
+          )}
+          {username === 'Guest' ? (
+            <div className="flex justify-center pt-2">
+              <LoginButton />
+            </div>
+          ) : (
+            <div className="flex justify-center mx-auto md:pt-4">
+              <Button to="/notes">To Notes</Button>
+            </div>
+          )}
         </div>
 
-        <div className="flex sm:gap-8 gap-4 flex-col sm:justify-center sm:flex-row">
-          <div className="w-64 h-32 bg-blue-200 hover:bg-blue-300 duration-300 rounded-3xl mt-4 select-none">
-            <p className="text-lg text-center pt-6 font-semibold">Notes on run</p>
-            <p className="text-sm text-center mt-2">
-              Create wherever you are! Easy access from every device
-            </p>
+        <div className="grid md:grid-cols-2 gap-8 mt-8 sm:mt-12">
+          <div className="feature-card p-8 rounded-3xl bg-white/80 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-6 w-16 h-16 rounded-2xl bg-purple-100 flex items-center justify-center">
+                <svg
+                  className="w-8 h-8 text-purple-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">Notes on the Go</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Capture ideas instantly from any device with our seamless cross-platform experience.
+              </p>
+            </div>
           </div>
-          <div className="w-64 h-32 bg-blue-200 hover:bg-blue-300 duration-300 rounded-3xl mt-4 select-none">
-            <p className="text-lg text-center pt-6 font-semibold">Many more to come</p>
-            <p className="text-sm text-center mt-2">
-              We are working hard to bring you more features
-            </p>
+
+          <div className="feature-card p-8 rounded-3xl bg-white/80 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-6 w-16 h-16 rounded-2xl bg-pink-100 flex items-center justify-center">
+                <svg
+                  className="w-8 h-8 text-pink-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">Coming Soon</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Stay tuned for exciting new features we're brewing to boost your productivity.
+              </p>
+            </div>
           </div>
         </div>
       </div>

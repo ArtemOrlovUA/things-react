@@ -7,22 +7,28 @@ import { useUser } from '../context/UserContext';
 function Header() {
   const { notes } = useNotes();
   const { currentUser } = useUser();
-
   const username = currentUser?.name || 'Guest';
-
   const isNotes = notes.length > 0;
 
   return (
-    <header className="bg-blue-300 md:flex md:items-center md:justify-between py-2 sm:p=2 sm:min-h-[70px] justify-center">
-      <Link to={'/'} className="text-xl">
-        <div className="sm:text-2xl text-3xl ml-2">
-          <span className="font-semibold">Things</span>: Your notes
+    <header className="bg-white/70 backdrop-blur-xl shadow-sm border-b border-white/40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <Link to="/" className="flex items-center space-x-2">
+            <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Things
+            </span>
+          </Link>
+
+          <div className="flex-1 max-w-2xl mx-4">
+            {username !== 'Guest' && isNotes ? <SearchNote /> : null}
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <Username />
+          </div>
         </div>
-      </Link>
-
-      {username !== 'Guest' && isNotes && <SearchNote />}
-
-      <Username />
+      </div>
     </header>
   );
 }

@@ -17,7 +17,7 @@ function formatDate(date) {
 function CreateNote() {
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
-  const [CategoryInput, setCategoryInput] = useState([]);
+  const [categoryInput, setCategoryInput] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const { addNote, categories, addCategory, deleteCategory } = useNotes();
   const [isHidden, setIsHidden] = useState(false);
@@ -28,6 +28,11 @@ function CreateNote() {
     } else {
       setSelectedCategories((prev) => [...prev, category]);
     }
+  };
+
+  const handleDeleteCategory = (category) => {
+    setSelectedCategories((prev) => prev.filter((c) => c !== category));
+    deleteCategory(category);
   };
 
   const handleSubmit = (e) => {
@@ -43,6 +48,7 @@ function CreateNote() {
 
     console.log(newNote);
 
+    // Очищення полів
     setTitle('');
     setNote('');
     setSelectedCategories([]);
@@ -50,20 +56,18 @@ function CreateNote() {
     addNote(newNote);
   };
 
-  const handleDeleteCategory = (category) => {
-    setSelectedCategories((prev) => prev.filter((c) => c !== category));
-    deleteCategory(category);
-  };
-
   return (
-    <div className="bg-blue-300 mx-6 mt-4 rounded-lg flex flex-col items-center sm:min-w-[15rem] max-h-[37rem] transition-all duration-300 ease-in-out">
+    <div className="mx-6 mt-4 rounded-3xl bg-gradient-to-br from-purple-50 to-blue-50 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out hover:-translate-y-2">
       <div className="sm:hidden w-[90%] flex float-right my-4">
-        <Button onClick={() => setIsHidden(!isHidden)} type="small">
+        <Button
+          onClick={() => setIsHidden(!isHidden)}
+          type="small"
+          className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-pink-600 hover:to-purple-600">
           {isHidden ? 'Open' : 'Hide'}
         </Button>
       </div>
       <form
-        className={`w-[90%] h-full flex flex-col justify-between transition-all duration-300 ease-in-out
+        className={`w-[90%] h-full flex ml-4 flex-col justify-between transition-all duration-300 ease-in-out
           ${
             isHidden ? 'max-h-0 opacity-0 overflow-hidden' : 'max-h-[1000px] opacity-100'
           } sm:max-h-[1000px] opacity-100`}
@@ -72,24 +76,28 @@ function CreateNote() {
           className={`transition-all duration-300 ease-in-out ${
             isHidden ? 'scale-y-0' : 'scale-y-100'
           } sm:scale-y-100`}>
-          <textarea
-            value={title}
-            maxLength={45}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 bg-blue-100 rounded-lg input_create h-24 text-lg sm:mt-4 resize-none"
-            placeholder="Enter a header..."
-            required></textarea>
-          <textarea
-            value={note}
-            maxLength={210}
-            onChange={(e) => setNote(e.target.value)}
-            className="w-full p-2 bg-blue-100 rounded-lg mt-4 input_create h-44 text-lg resize-none"
-            placeholder="Take a note..."></textarea>
-          <div className="grid grid-cols-[3fr_1fr] p-2 gap-x-2">
+          <div className="flex flex-col justify-center ">
+            <textarea
+              value={title}
+              maxLength={45}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full max-w-xl p-4 bg-white/80 backdrop-blur-lg rounded-xl input_create h-24 text-lg sm:mt-4 resize-none border border-white/20 shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              placeholder="Enter a header..."
+              required
+            />
+            <textarea
+              value={note}
+              maxLength={210}
+              onChange={(e) => setNote(e.target.value)}
+              className="w-full max-w-xl p-4 bg-white/80 backdrop-blur-lg rounded-xl mt-4 input_create h-44 text-lg resize-none border border-white/20 shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              placeholder="Take a note..."
+            />
+          </div>
+          <div className="grid grid-cols-[3fr_1fr] p-2 gap-x-2 mt-4">
             <input
-              className="rounded-full border min-w-4 border-stone-300 bg-stone-100 p-2 text-sm transition-all placeholder:text-stone-700 focus:outline-none focus:ring focus:ring-blue-400"
+              className="rounded-full bg-white/80 backdrop-blur-lg border border-white/20 p-3 text-sm shadow-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               placeholder="Add categories..."
-              value={CategoryInput}
+              value={categoryInput}
               onChange={(e) => setCategoryInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -99,20 +107,20 @@ function CreateNote() {
             />
             <Button
               type="small"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-pink-600 hover:to-purple-600 h-full"
               onClick={() => {
-                if (CategoryInput.trim() === '') return;
-                addCategory(CategoryInput);
+                if (categoryInput.trim() === '') return;
+                addCategory(categoryInput);
                 setCategoryInput('');
               }}>
               Add
             </Button>
           </div>
-          <div className="w-full bg-slate-50 rounded-lg mt-2">
-            <div className="flex overflow-x-auto">
+          <div className="w-full bg-white/50 backdrop-blur-lg rounded-xl mt-4 p-2 border border-white/20 shadow-sm">
+            <div className="flex overflow-x-auto gap-2">
               {selectedCategories.map((category) => (
-                // eslint-disable-next-line react/jsx-key
                 <div
-                  className="flex items-center justify-center gap-x-2 bg-blue-400 rounded-full px-3 py-1 m-2 w-fit"
+                  className="flex items-center justify-center gap-x-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full px-4 py-2 text-purple-800 border border-purple-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
                   key={category}
                   onClick={() => handleSelectCategory(category)}>
                   {category}
@@ -122,23 +130,24 @@ function CreateNote() {
                       handleDeleteCategory(category);
                     }}
                     type="close_selected"
+                    className="text-pink-600 hover:text-pink-800"
                   />
                 </div>
               ))}
               {categories.map((category) =>
                 selectedCategories.includes(category) ? null : (
-                  // eslint-disable-next-line react/jsx-key
                   <div
-                    className="flex items-center justify-center gap-x-2 bg-blue-200 rounded-full px-3 py-1 m-2 w-fit cursor-pointer"
+                    className="flex items-center justify-center gap-x-2 bg-white rounded-full px-4 py-2 text-gray-700 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
                     key={category}
                     onClick={() => handleSelectCategory(category)}>
-                    <div className="py-2">{category}</div>
+                    <div className="py-1">{category}</div>
                     <Button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteCategory(category);
                       }}
                       type="close"
+                      className="text-gray-500 hover:text-gray-700"
                     />
                   </div>
                 ),
@@ -147,9 +156,14 @@ function CreateNote() {
           </div>
         </div>
         <div
-          className={`w-full my-3 flex justify-center items-center transition-all duration-300 ease-in-out 
-            ${isHidden ? 'scale-y-0' : 'scale-y-100'} sm:scale-y-100`}>
-          <Button usageAs="submit">Add note</Button>
+          className={`w-full my-6 flex justify-center items-center transition-all duration-300 ease-in-out ${
+            isHidden ? 'scale-y-0' : 'scale-y-100'
+          } sm:scale-y-100`}>
+          <Button
+            usageAs="submit"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-pink-600 hover:to-purple-600 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all">
+            Add note
+          </Button>
         </div>
       </form>
     </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../../ui/Button';
 import { useUsername } from './usernameContext';
 import { useUser } from '../../context/UserContext';
@@ -10,6 +10,7 @@ function Username() {
   const { currentUser, handleLogout } = useUser();
   const [isExpanded, setIsExpanded] = useState(false);
   const [newUsername, setNewUsername] = useState('');
+  const menuRef = useRef(null);
   const navigate = useNavigate();
 
   const username = currentUser?.name || 'Guest';
@@ -17,19 +18,25 @@ function Username() {
   console.log(currentUser?.picture);
 
   function toggleExpand() {
+    if (username === 'Guest') return;
     setIsExpanded((prev) => !prev);
   }
 
-  function handleSave(e) {
-    e.preventDefault();
-    if (newUsername.trim() === '') {
-      alert('Please enter a username');
-      return;
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target) && username !== 'Guest') {
+        setIsExpanded(false);
+      }
+    };
+
+    if (isExpanded && username !== 'Guest') {
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
-    updateName(newUsername);
-    toggleExpand();
-  }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isExpanded, username]);
 
   useEffect(() => {
     console.log('User picture updated:', currentUser?.picture);
@@ -38,63 +45,44 @@ function Username() {
     }
   }, [currentUser?.picture]);
 
+  const handleLogoutClick = () => {
+    fetch('/.netlify/functions/logout', { credentials: 'include' })
+      .then(() => {
+        handleLogout();
+        setUserPicture('/default-avatar.png'); // Скидуємо аватар
+        setIsExpanded(false); // Закриваємо меню
+      })
+      .then(() => navigate('/'));
+  };
+
   return (
-    <>
-      <div className="flex space-x-2 mt-2 mr-2 md:mt-0">
-        {username !== 'Guest' && (
-          <span className="flex items-center ml-2  md:ml-0">
-            <img
-              src={userPicture || '/default-avatar.png'}
-              alt="User avatar"
-              className="w-10 h-10 mr-2 rounded-full"
-              onError={(e) => (e.target.src = '/default-avatar.png')}
-            />
+    <div className="relative group" ref={menuRef}>
+      <button onClick={toggleExpand} className="flex items-center space-x-2 focus:outline-none">
+        <img
+          src={userPicture || '/default-avatar.png'}
+          alt="User avatar"
+          className="w-9 h-9 rounded-full border-2 border-white/30 hover:border-purple-300 transition-all duration-200 shadow-sm hover:shadow-md"
+          onError={(e) => {
+            e.target.src = '/default-avatar.png';
+            setUserPicture('/default-avatar.png'); // Додано примусове оновлення
+          }}
+        />
+        <span className="text-gray-700 font-medium hidden md:inline-block">{username}</span>
+      </button>
 
-            {username !== 'Guest' ? username : ''}
-          </span>
-        )}
-
-        {/* {username !== 'Guest' && !isExpanded && (
-          <Button
-            type="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleExpand();
-            }}>
-            Change
-          </Button>
-        )} */}
-
-        {username !== 'Guest' && !isExpanded && (
-          <Button
-            type="small"
-            onClick={() => {
-              fetch('/.netlify/functions/logout', { credentials: 'include' }).then(() =>
-                handleLogout(),
-              );
-              navigate('/');
-            }}>
-            Log out
-          </Button>
-        )}
-
-        {isExpanded && (
-          <div>
-            <input
-              type="text"
-              defaultValue={username}
-              value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
-              placeholder="Enter your username"
-              className="p-2 rounded-lg input_small bg-stone-50 mr-2"
-            />
-            <Button type="small" onClick={handleSave}>
-              Save
-            </Button>
-          </div>
-        )}
+      <div
+        className={`absolute right-0 mt-2 w-48 rounded-xl bg-white/80 backdrop-blur-lg border border-white/20 shadow-xl ${
+          isExpanded ? 'block' : 'hidden'
+        }`}>
+        <div className="p-4 space-y-3">
+          <button
+            onClick={handleLogoutClick}
+            className="w-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100/50 rounded-lg transition-all duration-200">
+            Log Out
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

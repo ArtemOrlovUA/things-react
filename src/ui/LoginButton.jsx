@@ -1,12 +1,9 @@
 import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode';
 import { useUser } from '../context/UserContext';
-import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 function LoginButton() {
   const { handleLogin } = useUser();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('/.netlify/functions/check-auth', { credentials: 'include' })
