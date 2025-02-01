@@ -41,7 +41,7 @@ function CreateNote() {
     const newNote = {
       id: Date.now(),
       title: title.trim(),
-      text: note.trim(),
+      text: note.trim() === '' ? 'No text' : note.trim(),
       selectedCategories,
       date: formatDate(new Date()),
     };
