@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from '../../ui/Button';
 import { useNotes } from './notesContext';
 import HideAndOpenButton from '../../ui/HideAndOpenButton';
+import { useUser } from '../../context/UserContext';
 
 function formatDate(date) {
   const pad = (num) => num.toString().padStart(2, '0');
@@ -16,11 +17,12 @@ function formatDate(date) {
 }
 
 function CreateNote() {
+  const { currentUser } = useUser();
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
   const [categoryInput, setCategoryInput] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const { addNote, categories, addCategory, deleteCategory } = useNotes();
+  const { addNote, categories, addCategory, deleteCategory, isCreatingNote } = useNotes();
   const [isHidden, setIsHidden] = useState(false);
 
   const handleSelectCategory = (category) => {
@@ -39,12 +41,15 @@ function CreateNote() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (title.trim().length > 45) throw new Error('Title is too long');
+    if (note.trim().length > 210) throw new Error('Text of note is too long');
+
     const newNote = {
-      id: Date.now(),
       title: title.trim(),
       text: note.trim() === '' ? 'No text' : note.trim(),
       selectedCategories,
       date: formatDate(new Date()),
+      creatorEmail: currentUser?.email,
     };
 
     console.log(newNote);
@@ -152,11 +157,16 @@ function CreateNote() {
           className={`w-full my-6 flex justify-center items-center transition-all duration-300 ease-in-out ${
             isHidden ? 'scale-y-0' : 'scale-y-100'
           } sm:scale-y-100`}>
-          <Button
-            usageAs="submit"
-            className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-pink-600 hover:to-purple-600 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all">
+          {/* <Button usageAs="submit" isDisabled={isCreatingNote}>
             Add note
-          </Button>
+          </Button> */}
+          <button
+            className="px-8 py-4 font-bold rounded-full text-white bg-gradient-to-r from-purple-600 to-pink-600 
+      hover:from-purple-700 hover:to-pink-700 hover:shadow-lg hover:scale-[1.02] 
+      focus:ring-purple-200 focus:ring-offset-2"
+            disabled={isCreatingNote}>
+            {!isCreatingNote ? 'ADD NOTE' : 'ADDING NOTE...'}
+          </button>
         </div>
       </form>
     </div>

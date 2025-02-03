@@ -1,34 +1,27 @@
 /* eslint-disable react/prop-types */
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useCreateNote } from './useCreateNote';
+import { useGetNotesByEmail } from './useGetNotesByEmail';
+import { useUser } from '../../context/UserContext';
+import { useDeleteNote } from './useDeleteNote';
 
 const NotesContext = createContext();
 
 function NotesProvider({ children }) {
-  const validateNote = (note) => {
-    // Validate that the note has the required properties
-    return (
-      note &&
-      typeof note.id === 'number' &&
-      typeof note.title === 'string' &&
-      typeof note.text === 'string' &&
-      Array.isArray(note.selectedCategories) &&
-      typeof note.date === 'string'
-    );
-  };
+  const { createNote: addNoteApi, isCreatingNote } = useCreateNote();
+  const { deleteNote: deleteNoteApi, isDeletingNote } = useDeleteNote();
+  const { currentUser } = useUser();
+  const curUserEmail = currentUser?.email;
 
-  const [notes, setNotes] = useState(() => {
-    const savedNotes = localStorage.getItem('notes');
-    if (savedNotes) {
-      const parsedNotes = JSON.parse(savedNotes);
+  const { notes: userNotesByApi } = useGetNotesByEmail(curUserEmail);
 
-      const validNotes = parsedNotes.filter(validateNote);
-      if (validNotes.length !== parsedNotes.length) {
-        localStorage.setItem('notes', JSON.stringify(validNotes));
-      }
-      return validNotes;
+  const [notes, setNotes] = useState(userNotesByApi);
+
+  useEffect(() => {
+    if (userNotesByApi.length > 0) {
+      setNotes(userNotesByApi);
     }
-    return [];
-  });
+  }, [userNotesByApi]);
 
   const [categories, setCategories] = useState(() => {
     const savedCategories = localStorage.getItem('categories');
@@ -79,7 +72,7 @@ function NotesProvider({ children }) {
   }, [notes]);
 
   function addNote(newNote) {
-    setNotes((prevNotes) => [...prevNotes, newNote]);
+    addNoteApi({ newNote });
   }
 
   function editNote(updatedNote) {
@@ -89,13 +82,15 @@ function NotesProvider({ children }) {
   }
 
   function deleteNote(id) {
-    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+    console.log(curUserEmail);
+    deleteNoteApi({ noteId: id, creator_email: curUserEmail });
   }
 
   const value = {
     notes,
     setNotes,
     addNote,
+    isCreatingNote,
     editNote,
     deleteNote,
     addCategory,

@@ -26,7 +26,7 @@ function Home() {
               <LoginButton />
             </div>
           ) : (
-            <div className="flex justify-center mx-auto md:pt-4">
+            <div className="flex justify-center mx-auto md:pt-6">
               <Button to="/notes">To Notes</Button>
             </div>
           )}

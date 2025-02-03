@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 function Button({
   children,
   state,
+  isDisabled,
   to,
   type = 'primary',
   popovertarget,
@@ -120,9 +121,9 @@ function Button({
       type={usageAs}
       onClick={onClick}
       popovertarget={popovertarget}
-      disabled={state === 'loading' || state === 'submitting'}
+      disabled={isDisabled}
       className={styles[type]}>
-      {content}
+      {!isDisabled ? content : 'Loading...'}
     </button>
   );
 }

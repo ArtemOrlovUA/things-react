@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import Button from '../../ui/Button';
 import { useSearch } from './searchContext';
 
 function SearchNote() {

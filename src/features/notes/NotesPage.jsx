@@ -10,7 +10,7 @@ function NotesPage() {
         <div className="sm:overflow-auto">
           <CreateNote />
         </div>
-        <div className=" overflow-auto sm:overflow-visible">
+        <div className="overflow-hidden sm:overflow-visible">
           <Filters />
           <NotesList />
         </div>
