@@ -15,8 +15,6 @@ function Username() {
 
   const username = currentUser?.name || 'Guest';
 
-  console.log(currentUser?.picture);
-
   function toggleExpand() {
     if (username === 'Guest') return;
     setIsExpanded((prev) => !prev);
@@ -39,7 +37,6 @@ function Username() {
   }, [isExpanded, username]);
 
   useEffect(() => {
-    console.log('User picture updated:', currentUser?.picture);
     if (currentUser?.picture) {
       setUserPicture(() => currentUser.picture);
     }

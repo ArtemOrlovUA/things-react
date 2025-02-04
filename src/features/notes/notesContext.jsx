@@ -4,12 +4,14 @@ import { useCreateNote } from './useCreateNote';
 import { useGetNotesByEmail } from './useGetNotesByEmail';
 import { useUser } from '../../context/UserContext';
 import { useDeleteNote } from './useDeleteNote';
+import { useUpdateNote } from './useUpdateNote';
 
 const NotesContext = createContext();
 
 function NotesProvider({ children }) {
   const { createNote: addNoteApi, isCreatingNote } = useCreateNote();
   const { deleteNote: deleteNoteApi, isDeletingNote } = useDeleteNote();
+  const { updateNote: updateNoteApi, isUpdatingNote } = useUpdateNote();
   const { currentUser } = useUser();
   const curUserEmail = currentUser?.email;
 
@@ -79,10 +81,15 @@ function NotesProvider({ children }) {
     setNotes((prevNotes) =>
       prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note)),
     );
+    updateNoteApi(
+      { updatedNote },
+      {
+        context: { notes, setNotes }, // to make optimistic update
+      },
+    );
   }
 
   function deleteNote(id) {
-    console.log(curUserEmail);
     deleteNoteApi({ noteId: id, creator_email: curUserEmail });
   }
 

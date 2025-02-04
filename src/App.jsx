@@ -11,6 +11,7 @@ import LoginButton from './ui/LoginButton';
 import { UserProvider } from './context/UserContext';
 import ProtectedRoute from './ui/ProtectedRoute';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,21 @@ const router = createBrowserRouter([
             </NotesProvider>
           </UsernameProvider>
         </UserProvider>
+
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{
+            margin: '8px',
+          }}
+          toastOptions={{
+            success: { duration: 3000 },
+            error: { duration: 5000 },
+          }}
+          toastClassName={() =>
+            'bg-gradient-to-br from-purple-200 to-blue-200 text-gray-700 font-medium rounded-xl p-4 shadow-md max-w-[500px]'
+          }
+        />
       </QueryClientProvider>
     ),
     errorElement: <Error />,

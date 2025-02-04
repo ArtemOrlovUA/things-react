@@ -47,6 +47,7 @@ function EditNote({
                 date: note.date,
                 selectedCategories: note.selectedCategories,
               };
+
               editNote(editedNote);
               toggleEditing();
             }}

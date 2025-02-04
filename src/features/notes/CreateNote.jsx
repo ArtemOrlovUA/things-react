@@ -52,8 +52,6 @@ function CreateNote() {
       creatorEmail: currentUser?.email,
     };
 
-    console.log(newNote);
-
     setTitle('');
     setNote('');
     setSelectedCategories([]);

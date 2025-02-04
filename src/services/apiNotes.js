@@ -11,10 +11,22 @@ export async function createNote({ newNote }) {
   return data;
 }
 
-export async function deleteNote({ noteId, creator_email }) {
-  console.log('noteId', noteId);
-  console.log('creatorEmail', creator_email);
+export async function updateNote({ updatedNote }) {
+  const { data, error } = await supabase
+    .from('notes')
+    .update(updatedNote)
+    .eq('id', updatedNote.id)
+    .select();
 
+  if (error) {
+    console.error('Error updating note:', error.message);
+    throw new Error('Could not update note');
+  }
+
+  return data;
+}
+
+export async function deleteNote({ noteId, creator_email }) {
   const { error } = await supabase
     .from('notes')
     .delete()
@@ -28,7 +40,11 @@ export async function deleteNote({ noteId, creator_email }) {
 }
 
 export async function getNotesByEmail(creatorEmail) {
-  const { data, error } = await supabase.from('notes').select().eq('creatorEmail', creatorEmail);
+  const { data, error } = await supabase
+    .from('notes')
+    .select()
+    .eq('creatorEmail', creatorEmail)
+    .order('id', { ascending: false });
 
   if (error) {
     console.error('Error getting notes:', error.message);
