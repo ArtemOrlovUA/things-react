@@ -123,7 +123,7 @@ function Button({
       popovertarget={popovertarget}
       disabled={isDisabled}
       className={styles[type]}>
-      {!isDisabled ? content : 'Loading...'}
+      {content}
     </button>
   );
 }

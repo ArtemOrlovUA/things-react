@@ -5,15 +5,22 @@ import { useGetNotesByEmail } from './useGetNotesByEmail';
 import { useUser } from '../../context/UserContext';
 import { useDeleteNote } from './useDeleteNote';
 import { useUpdateNote } from './useUpdateNote';
+import { useGetCategoriesByEmail } from './useGetCategoriesByEmail';
+import { useCreateCategory } from './useCreateCategory';
 
 const NotesContext = createContext();
 
 function NotesProvider({ children }) {
   const { createNote: addNoteApi, isCreatingNote } = useCreateNote();
-  const { deleteNote: deleteNoteApi, isDeletingNote } = useDeleteNote();
   const { updateNote: updateNoteApi, isUpdatingNote } = useUpdateNote();
+  const { deleteNote: deleteNoteApi, isDeletingNote } = useDeleteNote();
+
+  const { createCategory, isCreatingCategory } = useCreateCategory();
+
   const { currentUser } = useUser();
   const curUserEmail = currentUser?.email;
+
+  // Getting notes
 
   const { notes: userNotesByApi } = useGetNotesByEmail(curUserEmail);
 
@@ -25,21 +32,38 @@ function NotesProvider({ children }) {
     }
   }, [userNotesByApi]);
 
-  const [categories, setCategories] = useState(() => {
-    const savedCategories = localStorage.getItem('categories');
-    return savedCategories ? JSON.parse(savedCategories) : [];
-  });
+  // Getting categories
+
+  const { categories: userCategoriesByApi } = useGetCategoriesByEmail(curUserEmail);
+
+  const categoryNames = userCategoriesByApi.map((categoryObj) => categoryObj.categories).flat();
+
+  const [categories, setCategories] = useState(categoryNames);
 
   useEffect(() => {
-    localStorage.setItem('categories', JSON.stringify(categories));
-  }, [categories]);
+    if (userCategoriesByApi.length > 0) {
+      setCategories(categoryNames);
+    }
+  }, [userCategoriesByApi]);
 
   function addCategory(newCategory) {
     if (categories.includes(newCategory)) {
       alert('Category already added');
       return;
     }
-    setCategories((prevCategories) => [...prevCategories, newCategory]);
+
+    const categoryToCreate = {
+      userEmail: curUserEmail,
+      categories: [newCategory],
+    };
+
+    createCategory(
+      { newCategory: categoryToCreate },
+      {
+        context: { categories, setCategories }, // to make optimistic update
+      },
+    );
+    // setCategories((prevCategories) => [...prevCategories, newCategory]);
   }
 
   function addSelectedCategory(noteId, category) {

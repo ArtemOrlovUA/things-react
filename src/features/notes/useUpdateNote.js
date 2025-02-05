@@ -11,7 +11,7 @@ export function useUpdateNote() {
     onError: (error, variables, context) => {
       console.error('Error updating note:', error);
       if (context?.notes && context?.setNotes) {
-        context?.setNotes(context.notesStateBeforeUpdate);
+        context?.setNotes(context.notes);
       }
       toast.error('Could not update note. Please try again');
     },

@@ -53,3 +53,56 @@ export async function getNotesByEmail(creatorEmail) {
 
   return data;
 }
+
+export async function createCategory({ newCategory }) {
+  console.log(newCategory);
+  const { data: categories, error: categoriesError } = await supabase
+    .from('categories')
+    .select()
+    .eq('userEmail', newCategory.userEmail);
+
+  if (categoriesError) {
+    console.error('Error getting categories:', categoriesError.message);
+    throw new Error('Could not get categories');
+  }
+
+  console.log(categories);
+
+  if (categories?.length > 0) {
+    const currentCategories = categories.flatMap((catObj) => catObj.categories);
+    const newCategoriesArr = [...currentCategories, ...newCategory.categories];
+
+    const { data, error } = await supabase
+      .from('categories')
+      .update([{ categories: newCategoriesArr }])
+      .eq('userEmail', newCategory.userEmail)
+      .select();
+
+    if (error) {
+      console.error('Error adding category:', error.message);
+      throw new Error('Could not add category');
+    }
+
+    return data;
+  } else {
+    const { data, error } = await supabase.from('categories').insert([newCategory]).select();
+
+    if (error) {
+      console.error('Error adding category:', error.message);
+      throw new Error('Could not add category');
+    }
+
+    return data;
+  }
+}
+
+export async function getCategoriesByEmail(userEmail) {
+  const { data, error } = await supabase.from('categories').select().eq('userEmail', userEmail);
+
+  if (error) {
+    console.error('Error getting categories:', error.message);
+    throw new Error('Could not get categories');
+  }
+
+  return data;
+}

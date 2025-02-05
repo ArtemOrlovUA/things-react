@@ -25,6 +25,8 @@ function CreateNote() {
   const { addNote, categories, addCategory, deleteCategory, isCreatingNote } = useNotes();
   const [isHidden, setIsHidden] = useState(false);
 
+  console.log(categories);
+
   const handleSelectCategory = (category) => {
     if (selectedCategories.includes(category)) {
       setSelectedCategories((prev) => prev.filter((c) => c !== category));
@@ -112,44 +114,46 @@ function CreateNote() {
               Add
             </Button>
           </div>
-          <div className="w-full bg-white/50 backdrop-blur-lg rounded-xl mt-4 p-2 border border-white/20 shadow-sm">
-            <div className="flex overflow-x-auto gap-2">
-              {selectedCategories.map((category) => (
-                <div
-                  className="flex items-center justify-center gap-x-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full px-4 py-2 text-purple-800 border border-purple-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
-                  key={category}
-                  onClick={() => handleSelectCategory(category)}>
-                  {category}
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteCategory(category);
-                    }}
-                    type="close_selected"
-                    className="text-pink-600 hover:text-pink-800"
-                  />
-                </div>
-              ))}
-              {categories.map((category) =>
-                selectedCategories.includes(category) ? null : (
+          {categories.length > 0 && (
+            <div className="w-full bg-white/50 backdrop-blur-lg rounded-xl mt-4 p-2 border border-white/20 shadow-sm">
+              <div className="flex overflow-x-auto gap-2">
+                {selectedCategories.map((category) => (
                   <div
-                    className="flex items-center justify-center gap-x-2 bg-white rounded-full px-4 py-2 text-gray-700 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                    className="flex items-center justify-center gap-x-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full px-4 py-2 text-purple-800 border border-purple-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
                     key={category}
                     onClick={() => handleSelectCategory(category)}>
-                    <div className="py-1">{category}</div>
+                    {category}
                     <Button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteCategory(category);
                       }}
-                      type="close"
-                      className="text-gray-500 hover:text-gray-700"
+                      type="close_selected"
+                      className="text-pink-600 hover:text-pink-800"
                     />
                   </div>
-                ),
-              )}
+                ))}
+                {categories.map((category) =>
+                  selectedCategories.includes(category) ? null : (
+                    <div
+                      className="flex items-center justify-center gap-x-2 bg-white rounded-full px-4 py-2 text-gray-700 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                      key={category}
+                      onClick={() => handleSelectCategory(category)}>
+                      <div className="py-1">{category}</div>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteCategory(category);
+                        }}
+                        type="close"
+                        className="text-gray-500 hover:text-gray-700"
+                      />
+                    </div>
+                  ),
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div
           className={`w-full my-6 flex justify-center items-center transition-all duration-300 ease-in-out ${
