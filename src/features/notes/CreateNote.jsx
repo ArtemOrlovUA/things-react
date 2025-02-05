@@ -25,8 +25,6 @@ function CreateNote() {
   const { addNote, categories, addCategory, deleteCategory, isCreatingNote } = useNotes();
   const [isHidden, setIsHidden] = useState(false);
 
-  console.log(categories);
-
   const handleSelectCategory = (category) => {
     if (selectedCategories.includes(category)) {
       setSelectedCategories((prev) => prev.filter((c) => c !== category));
