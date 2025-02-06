@@ -3,6 +3,8 @@ import Button from '../../ui/Button';
 import { useNotes } from './notesContext';
 import HideAndOpenButton from '../../ui/HideAndOpenButton';
 import { useUser } from '../../context/UserContext';
+import SpinnerMini from '../../ui/Spinner';
+import Spinner from '../../ui/Spinner';
 
 function formatDate(date) {
   const pad = (num) => num.toString().padStart(2, '0');
@@ -22,7 +24,8 @@ function CreateNote() {
   const [note, setNote] = useState('');
   const [categoryInput, setCategoryInput] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const { addNote, categories, addCategory, deleteCategory, isCreatingNote } = useNotes();
+  const { addNote, categories, addCategory, deleteCategory, isCreatingNote, isCreatingCategory } =
+    useNotes();
   const [isHidden, setIsHidden] = useState(false);
 
   const handleSelectCategory = (category) => {
@@ -35,6 +38,7 @@ function CreateNote() {
 
   const handleDeleteCategory = (category) => {
     setSelectedCategories((prev) => prev.filter((c) => c !== category));
+    console.log(category);
     deleteCategory(category);
   };
 
@@ -103,13 +107,12 @@ function CreateNote() {
             />
             <Button
               type="small"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-pink-600 hover:to-purple-600 h-full"
               onClick={() => {
                 if (categoryInput.trim() === '') return;
                 addCategory(categoryInput);
                 setCategoryInput('');
               }}>
-              Add
+              {isCreatingCategory ? <Spinner size="1rem" color="#db2777" /> : 'Add'}
             </Button>
           </div>
           {categories.length > 0 && (
@@ -117,7 +120,7 @@ function CreateNote() {
               <div className="flex overflow-x-auto gap-2">
                 {selectedCategories.map((category) => (
                   <div
-                    className="flex items-center justify-center gap-x-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full px-4 py-2 text-purple-800 border border-purple-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                    className="flex items-center justify-center gap-x-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full px-4 py-2 text-purple-800 border border-purple-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer whitespace-nowrap"
                     key={category}
                     onClick={() => handleSelectCategory(category)}>
                     {category}
@@ -134,7 +137,7 @@ function CreateNote() {
                 {categories.map((category) =>
                   selectedCategories.includes(category) ? null : (
                     <div
-                      className="flex items-center justify-center gap-x-2 bg-white rounded-full px-4 py-2 text-gray-700 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                      className="flex items-center justify-center gap-x-2 bg-white rounded-full px-4 py-2 text-gray-700 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer whitespace-nowrap"
                       key={category}
                       onClick={() => handleSelectCategory(category)}>
                       <div className="py-1">{category}</div>
@@ -157,9 +160,6 @@ function CreateNote() {
           className={`w-full my-6 flex justify-center items-center transition-all duration-300 ease-in-out ${
             isHidden ? 'scale-y-0' : 'scale-y-100'
           } sm:scale-y-100`}>
-          {/* <Button usageAs="submit" isDisabled={isCreatingNote}>
-            Add note
-          </Button> */}
           <button
             className="px-8 py-4 font-bold rounded-full text-white bg-gradient-to-r from-purple-600 to-pink-600 
       hover:from-purple-700 hover:to-pink-700 hover:shadow-lg hover:scale-[1.02] 

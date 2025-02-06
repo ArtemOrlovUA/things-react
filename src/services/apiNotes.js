@@ -96,6 +96,83 @@ export async function createCategory({ newCategory }) {
   }
 }
 
+export async function deleteCategory({ category, userEmail }) {
+  console.log(category, userEmail);
+
+  const { data, error } = await supabase.from('categories').select().eq('userEmail', userEmail);
+
+  if (error) {
+    console.error('Error getting categories:', error.message);
+    throw new Error('Could not get categories');
+  }
+
+  const currentCategories = data[0].categories;
+  const newCategories = currentCategories.filter((cat) => cat !== category);
+
+  const { data: updatedData, error: updatedError } = await supabase
+    .from('categories')
+    .update([{ categories: newCategories }])
+    .eq('userEmail', userEmail)
+    .select();
+
+  if (updatedError) {
+    console.error('Error deleting category:', updatedError.message);
+    throw new Error('Could not delete category');
+  }
+
+  return updatedData;
+}
+
+export async function addSelectedCategory({ noteId, category }) {
+  const { data, error } = await supabase.from('notes').select().eq('id', noteId);
+
+  if (error) {
+    console.error('Error getting note:', error.message);
+    throw new Error('Could not get note');
+  }
+
+  const currentCategories = data[0].selectedCategories;
+  const newCategories = [...currentCategories, category];
+
+  const { data: updatedData, error: updatedError } = await supabase
+    .from('notes')
+    .update([{ selectedCategories: newCategories }])
+    .eq('id', noteId)
+    .select();
+
+  if (updatedError) {
+    console.error('Error adding category:', updatedError.message);
+    throw new Error('Could not add category');
+  }
+
+  return updatedData;
+}
+
+export async function deleteSelectedCategory({ noteId, category }) {
+  const { data, error } = await supabase.from('notes').select().eq('id', noteId);
+
+  if (error) {
+    console.error('Error getting note:', error.message);
+    throw new Error('Could not get note');
+  }
+
+  const currentCategories = data[0].selectedCategories;
+  const newCategories = currentCategories.filter((cat) => cat !== category);
+
+  const { data: updatedData, error: updatedError } = await supabase
+    .from('notes')
+    .update([{ selectedCategories: newCategories }])
+    .eq('id', noteId)
+    .select();
+
+  if (updatedError) {
+    console.error('Error deleting category:', updatedError.message);
+    throw new Error('Could not delete category');
+  }
+
+  return updatedData;
+}
+
 export async function getCategoriesByEmail(userEmail) {
   const { data, error } = await supabase.from('categories').select().eq('userEmail', userEmail);
 

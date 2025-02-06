@@ -7,6 +7,9 @@ import { useDeleteNote } from './useDeleteNote';
 import { useUpdateNote } from './useUpdateNote';
 import { useGetCategoriesByEmail } from './useGetCategoriesByEmail';
 import { useCreateCategory } from './useCreateCategory';
+import { useDeleteCategory } from './useDeleteCategory';
+import { useAddSelectedCategory } from './useAddSelectedCategory';
+import { useDeleteSelectedCategory } from './useDeleteSelectedCategory';
 
 const NotesContext = createContext();
 
@@ -16,6 +19,11 @@ function NotesProvider({ children }) {
   const { deleteNote: deleteNoteApi, isDeletingNote } = useDeleteNote();
 
   const { createCategory, isCreatingCategory } = useCreateCategory();
+  const { addSelectedCategory: addSelectedCategoryApi, isAddingSelectedCategory } =
+    useAddSelectedCategory();
+
+  const { deleteCategory: deleteCategoryApi, isDeletingCategory } = useDeleteCategory();
+  const { deleteSelectedCategory, isDeletingSelectedCategory } = useDeleteSelectedCategory();
 
   const { currentUser } = useUser();
   const curUserEmail = currentUser?.email;
@@ -74,10 +82,14 @@ function NotesProvider({ children }) {
           : note,
       ),
     );
+
+    addSelectedCategoryApi({ noteId, category });
   }
 
   function deleteCategory(category) {
     setCategories((prevCategories) => prevCategories.filter((cat) => cat !== category));
+    console.log(category, curUserEmail);
+    deleteCategoryApi({ category, userEmail: curUserEmail });
   }
 
   function deleteSelectedCategories(noteId, category) {
@@ -91,11 +103,8 @@ function NotesProvider({ children }) {
           : note,
       ),
     );
+    deleteSelectedCategory({ noteId, category });
   }
-
-  useEffect(() => {
-    localStorage.setItem('notes', JSON.stringify(notes));
-  }, [notes]);
 
   function addNote(newNote) {
     addNoteApi({ newNote });
@@ -125,6 +134,7 @@ function NotesProvider({ children }) {
     editNote,
     deleteNote,
     addCategory,
+    isCreatingCategory,
     addSelectedCategory,
     deleteCategory,
     deleteSelectedCategories,
