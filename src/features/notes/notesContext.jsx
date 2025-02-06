@@ -60,6 +60,11 @@ function NotesProvider({ children }) {
       return;
     }
 
+    if (newCategory.length > 25) {
+      alert('Category name is too long. Max length is 25 characters');
+      return;
+    }
+
     const categoryToCreate = {
       userEmail: curUserEmail,
       categories: [newCategory],

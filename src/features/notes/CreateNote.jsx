@@ -100,6 +100,7 @@ function CreateNote() {
             <input
               className="rounded-full bg-white/80 backdrop-blur-lg border border-white/20 p-3 text-sm shadow-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               placeholder="Add categories..."
+              maxLength={25}
               value={categoryInput}
               onChange={(e) => setCategoryInput(e.target.value)}
               onKeyDown={(e) => {
