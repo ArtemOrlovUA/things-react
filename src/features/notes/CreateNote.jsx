@@ -38,8 +38,11 @@ function CreateNote() {
 
   const handleDeleteCategory = (category) => {
     setSelectedCategories((prev) => prev.filter((c) => c !== category));
-    console.log(category);
     deleteCategory(category);
+  };
+
+  const handleUnselectCategory = (category) => {
+    setSelectedCategories((prev) => prev.filter((c) => c !== category));
   };
 
   const handleSubmit = (e) => {
@@ -50,7 +53,7 @@ function CreateNote() {
 
     const newNote = {
       title: title.trim(),
-      text: note.trim() === '' ? 'No text' : note.trim(),
+      text: note.trim() === '' ? '[No text]' : note.trim(),
       selectedCategories,
       date: formatDate(new Date()),
       creatorEmail: currentUser?.email,
@@ -120,14 +123,14 @@ function CreateNote() {
               <div className="flex overflow-x-auto gap-2">
                 {selectedCategories.map((category) => (
                   <div
-                    className="flex items-center justify-center gap-x-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full px-4 py-2 text-purple-800 border border-purple-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer whitespace-nowrap"
+                    className="flex items-center max-h-12 mb-2 justify-center gap-x-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full px-4 py-2 text-purple-800 border border-purple-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer whitespace-nowrap"
                     key={category}
                     onClick={() => handleSelectCategory(category)}>
                     {category}
                     <Button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteCategory(category);
+                        handleUnselectCategory(category);
                       }}
                       type="close_selected"
                       className="text-pink-600 hover:text-pink-800"
@@ -137,7 +140,7 @@ function CreateNote() {
                 {categories.map((category) =>
                   selectedCategories.includes(category) ? null : (
                     <div
-                      className="flex items-center justify-center gap-x-2 bg-white rounded-full px-4 py-2 text-gray-700 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer whitespace-nowrap"
+                      className="flex items-center max-h-12 mb-2 justify-center gap-x-2 bg-white rounded-full px-4 py-2 text-gray-700 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer whitespace-nowrap"
                       key={category}
                       onClick={() => handleSelectCategory(category)}>
                       <div className="py-1">{category}</div>
