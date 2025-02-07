@@ -5,38 +5,61 @@ import { useNotes } from '../notes/notesContext';
 const filtersContext = createContext();
 
 function FiltersProvider({ children }) {
-  const { notes } = useNotes();
-  const [filters, setFilters] = useState(['Alphabet', 'Date']);
-  const [selectedFilter, setSelectedFilter] = useState('');
+  const { notes, categories } = useNotes();
+  const [filters] = useState(['Alphabet', 'Newest', 'Oldest']);
+  const [selectedFilter, setSelectedFilter] = useState('Alphabet');
   const [filteredNotes, setFilteredNotes] = useState([]);
+  const [filteredCategory, setFilteredCategory] = useState('');
 
   function handleSelectFilter(filter) {
-    if (selectedFilter === filter) {
-      setSelectedFilter('');
+    setSelectedFilter(filter);
+  }
+
+  function handleSelectCategory(category) {
+    if (filteredCategory === category) {
+      setFilteredCategory('');
     } else {
-      setSelectedFilter(filter);
+      setFilteredCategory(category);
     }
   }
 
   useEffect(() => {
+    let updatedNotes = [...notes];
+
+    if (filteredCategory) {
+      updatedNotes = updatedNotes.filter((note) =>
+        note.selectedCategories.includes(filteredCategory),
+      );
+    }
+
+    const parseDate = (dateString) => {
+      const [timePart, datePart] = dateString.split(', ');
+      const [hours, minutes] = timePart.split(':');
+      const [day, month, year] = datePart.split('.');
+      return new Date(year, month - 1, day, hours, minutes);
+    };
+
     if (selectedFilter === 'Alphabet') {
-      setFilteredNotes(() => [...notes].sort((a, b) => a.title.localeCompare(b.title)));
+      updatedNotes.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (selectedFilter === 'Newest') {
+      updatedNotes.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+    } else if (selectedFilter === 'Oldest') {
+      updatedNotes.sort((a, b) => parseDate(a.date) - parseDate(b.date));
     }
-    if (selectedFilter === 'Date') {
-      setFilteredNotes(() => {
-        const parseDate = (dateString) => {
-          const [timePart, datePart] = dateString.split(', ');
-          const [hours, minutes] = timePart.split(':');
-          const [day, month, year] = datePart.split('.');
-          return new Date(year, month - 1, day, hours, minutes);
-        };
-        return [...notes].sort((a, b) => parseDate(b.date) - parseDate(a.date));
-      });
-    }
-  }, [selectedFilter, notes]);
+
+    setFilteredNotes(updatedNotes);
+  }, [selectedFilter, filteredCategory, notes]);
 
   return (
-    <filtersContext.Provider value={{ filters, selectedFilter, filteredNotes, handleSelectFilter }}>
+    <filtersContext.Provider
+      value={{
+        filters,
+        selectedFilter,
+        filteredNotes,
+        handleSelectFilter,
+        filteredCategory,
+        handleSelectCategory,
+      }}>
       {children}
     </filtersContext.Provider>
   );
