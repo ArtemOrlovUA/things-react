@@ -8,7 +8,7 @@ function Filters() {
 
   return (
     <div className="bg-white/30 backdrop-blur-lg rounded-xl p-4 mx-6 my-4 border border-white/20 shadow-sm hover:shadow-md transition-shadow duration-200">
-      <div className="w-full overflow-x-auto sm:flex flex-nowrap items-center gap-4 pb-2">
+      <div className="w-full overflow-x-auto sm:flex flex-nowrap items-center gap-4 py-2">
         <div className="flex items-center gap-4 mb-4 sm:mb-0">
           <p className="text-lg font-medium bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent whitespace-nowrap">
             Sort by:
