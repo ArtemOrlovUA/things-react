@@ -29,25 +29,27 @@ function Filters() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <p className="text-lg font-medium bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent whitespace-nowrap">
-            Filter by:
-          </p>
-          <div className="flex gap-2 flex-nowrap">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => handleSelectCategory(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border ${
-                  filteredCategory === category
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 whitespace-nowrap text-white shadow-lg border-transparent'
-                    : 'bg-white/50 backdrop-blur-sm border-white/30 whitespace-nowrap text-gray-600 hover:border-purple-300'
-                }`}>
-                {category}
-              </button>
-            ))}
+        {categories.length > 0 && (
+          <div className="flex items-center gap-4">
+            <p className="text-lg font-medium bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent whitespace-nowrap">
+              Filter by:
+            </p>
+            <div className="flex gap-2 flex-nowrap">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => handleSelectCategory(category)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border ${
+                    filteredCategory === category
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 whitespace-nowrap text-white shadow-lg border-transparent'
+                      : 'bg-white/50 backdrop-blur-sm border-white/30 whitespace-nowrap text-gray-600 hover:border-purple-300'
+                  }`}>
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -35,9 +35,7 @@ function NotesProvider({ children }) {
   const [notes, setNotes] = useState(userNotesByApi);
 
   useEffect(() => {
-    if (userNotesByApi.length > 0) {
-      setNotes(userNotesByApi);
-    }
+    setNotes(userNotesByApi);
   }, [userNotesByApi]);
 
   // Getting categories
